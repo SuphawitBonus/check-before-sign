@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "id": "dummy-license",
+    "title": "ใบอนุญาตตัวอย่างสำหรับทดสอบ Engine",
+    "shortTitle": "กฎตัวอย่าง Dummy",
+    "description": "Rule Pack จำลองสำหรับพิสูจน์ว่า Engine ไม่ผูกติดกับกฎหมายเรื่องใดเรื่องหนึ่งโดยเฉพาะ",
+    "category": "การทดสอบระบบ",
+    "iconName": "Shield",
+    "effectiveDate": "2026-01-01",
+    "effectiveDateDisplay": "1 มกราคม 2569",
+    "officialSources": [
+      {
+        "title": "เอกสารจำลองระบบทดสอบ",
+        "url": "https://example.com/dummy-gazette",
+        "gazetteRef": "ราชกิจจานุเบกษาจำลอง เล่ม ๙๙๙ ตอน ๑",
+        "effectiveDate": "2026-01-01"
+      }
+    ],
+    "helpChannels": [
+      {
+        "name": "ศูนย์ทดสอบจำลอง",
+        "tel": "02-000-0000",
+        "url": "https://example.com/help",
+        "description": "ช่องทางช่วยเหลือจำลอง"
+      }
+    ],
+    "disclaimer": "นี่คือการเทียบกับตัวบท ไม่ใช่คำปรึกษาทางกฎหมาย",
+    "scopeQuestionId": "q_dummy_scope",
+    "scopeClarification": {
+      "inScopeDescription": "การใช้งานในระบบทดสอบ",
+      "outOfScopeExamples": ["การใช้งานนอกระบบทดสอบ"]
+    }
+  },
+  "questions": [
+    {
+      "id": "q_dummy_scope",
+      "text": "คุณอยู่ในขอบเขตของระบบจำลองหรือไม่?",
+      "type": "choice",
+      "isScopeQuestion": true,
+      "allowUnsure": true,
+      "options": [
+        {
+          "label": "อยู่ในขอบเขต",
+          "value": "in_scope"
+        },
+        {
+          "label": "ไม่อยู่ในขอบเขต",
+          "value": "out_of_scope",
+          "isOutOfScope": true
+        }
+      ]
+    },
+    {
+      "id": "q_dummy_fee",
+      "text": "ค่าธรรมเนียมที่เรียกเก็บเป็นจำนวนกี่บาท?",
+      "type": "number",
+      "unit": "บาท",
+      "allowUnsure": true
+    },
+    {
+      "id": "q_dummy_notice",
+      "text": "มีการแจ้งล่วงหน้าก่อนยกเลิกหรือไม่?",
+      "type": "choice",
+      "allowUnsure": true,
+      "options": [
+        {
+          "label": "แจ้งล่วงหน้า",
+          "value": "yes"
+        },
+        {
+          "label": "ไม่แจ้งล่วงหน้า",
+          "value": "no"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule_dummy_fee_cap",
+      "title": "เพดานค่าธรรมเนียมจำลอง",
+      "description": "ค่าธรรมเนียมต้องไม่เกิน 100 บาท",
+      "legalRef": {
+        "clause": "ข้อ ๑ กฎจำลอง",
+        "verbatim": "ค่าธรรมเนียมจำลองห้ามเกินหนึ่งร้อยบาท",
+        "sourceUrl": "https://example.com/rule-1"
+      },
+      "politeNegotiationTemplate": "ขอความกรุณาปรับลดค่าธรรมเนียมไม่ให้เกิน 100 บาทครับ"
+    },
+    {
+      "id": "rule_dummy_notice_required",
+      "title": "การแจ้งล่วงหน้าจำลอง",
+      "description": "ต้องแจ้งล่วงหน้าก่อนยกเลิก",
+      "legalRef": {
+        "clause": "ข้อ ๒ กฎจำลอง",
+        "verbatim": "ต้องบอกกล่าวล่วงหน้าก่อนการยกเลิก",
+        "sourceUrl": "https://example.com/rule-2"
+      },
+      "politeNegotiationTemplate": "ขอความกรุณาแจ้งล่วงหน้าตามระเบียบครับ"
+    }
+  ]
+}

@@ -76,3 +76,4 @@ export function getAllActivePacks(): PackDefinition['meta'][] {
 export function getPackById(id: string): PackRegistryItem | null {
   return PACK_REGISTRY[id] || null;
 }
+

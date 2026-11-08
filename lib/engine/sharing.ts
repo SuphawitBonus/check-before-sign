@@ -83,3 +83,4 @@ export function decodeAnswersFromShareHash(hash: string): Record<string, any> | 
     return null;
   }
 }
+

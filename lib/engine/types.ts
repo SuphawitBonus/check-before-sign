@@ -140,3 +140,4 @@ export interface TestCase {
     ruleStatuses?: Record<string, RuleStatus>;
   };
 }
+

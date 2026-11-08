@@ -373,3 +373,4 @@ export const rentalPackRules: PackRules = {
   evaluateScope: evaluateRentalScope,
   rules,
 };
+

@@ -102,3 +102,4 @@ export const TestCaseSchema = z.object({
 });
 
 export const CasesSchema = z.array(TestCaseSchema).min(1, 'ต้องมีเคสทดสอบอย่างน้อย 1 เคส');
+

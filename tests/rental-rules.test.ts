@@ -280,3 +280,4 @@ describe('Rental Pack Rules Unit Tests (ขัด, ไม่ขัด, บอก
     });
   });
 });
+

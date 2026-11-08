@@ -85,3 +85,4 @@
 3. **การควบคุมความถูกต้องของ Pack (Strict Schema Validation):**
    - ทุก Pack ต้องผ่านการตรวจสอบโครงสร้าง Schema ด้วย Zod ในกระบวนการ Build
    - หากไฟล์ `pack.json` หรือโครงสร้างไม่ตรงตาม Schema ที่กำหนด **ขั้นตอน Build ต้องล้มเหลว (Fail the Build) ทันที** เพื่อป้องกันข้อผิดพลาดขึ้น Production
+

@@ -3,7 +3,7 @@ import dummyPackJson from './fixtures/dummy-pack/pack.json';
 import { dummyPackRules } from './fixtures/dummy-pack/rules';
 import { evaluatePack, getQuestionnaireEnd, findQuestionnaireEnd } from '../lib/engine/evaluator';
 import { encodeAnswersToShareHash, decodeAnswersFromShareHash } from '../lib/engine/sharing';
-import { PackDefinitionSchema } from '../lib/engine/schema';
+import { PackDefinitionSchema, CasesSchema } from '../lib/engine/schema';
 import { PackDefinition } from '../lib/engine/types';
 
 describe('Engine Core (Decoupled from Rental Pack)', () => {
@@ -134,6 +134,58 @@ describe('Engine Core (Decoupled from Rental Pack)', () => {
       const bad = structuredClone(dummyPackJson) as any;
       bad.questions[1].options[1].endsQuestionnaire = { reason: '' };
       expect(PackDefinitionSchema.safeParse(bad).success).toBe(false);
+    });
+  });
+
+  describe('Schema validation behaviour (pinned across zod upgrades)', () => {
+    const issues = (r: { success: boolean; error?: { issues: { message: string; path: PropertyKey[] }[] } }) =>
+      r.success ? [] : r.error!.issues.map((i) => ({ message: i.message, path: i.path.join('.') }));
+
+    it('rejects an invalid source URL with the Thai message', () => {
+      const bad = structuredClone(dummyPackJson) as any;
+      bad.meta.officialSources[0].url = 'not a url';
+      expect(issues(PackDefinitionSchema.safeParse(bad))).toContainEqual({
+        message: 'URL แหล่งที่มาต้องเป็น URL ที่ถูกต้อง',
+        path: 'meta.officialSources.0.url',
+      });
+    });
+
+    it('rejects an invalid legalRef.sourceUrl', () => {
+      const bad = structuredClone(dummyPackJson) as any;
+      bad.rules[0].legalRef.sourceUrl = 'example.com/no-scheme';
+      expect(PackDefinitionSchema.safeParse(bad).success).toBe(false);
+    });
+
+    it('rejects a scopeQuestionId that matches no question', () => {
+      const bad = structuredClone(dummyPackJson) as any;
+      bad.meta.scopeQuestionId = 'q_missing';
+      expect(issues(PackDefinitionSchema.safeParse(bad))).toContainEqual({
+        message: 'คำถามตรวจขอบเขต (scopeQuestionId) ต้องตรงกับคำถามข้อใดข้อหนึ่งใน questions',
+        path: 'meta.scopeQuestionId',
+      });
+    });
+
+    it('defaults allowUnsure to true when omitted', () => {
+      const p = structuredClone(dummyPackJson) as any;
+      delete p.questions[2].allowUnsure;
+      expect(PackDefinitionSchema.parse(p).questions[2].allowUnsure).toBe(true);
+    });
+
+    it('TestCaseSchema requires isHypothetical: true, with the Thai message', () => {
+      const base = { id: 'c', title: 't', description: 'd', answers: { q_x: 1 }, expected: {} };
+      expect(CasesSchema.safeParse([{ ...base, isHypothetical: true }]).success).toBe(true);
+      expect(issues(CasesSchema.safeParse([{ ...base, isHypothetical: false }]))).toContainEqual({
+        message: 'ชุดทดสอบต้องระบุ isHypothetical: true (เป็นตัวอย่างแต่งขึ้น)',
+        path: '0.isHypothetical',
+      });
+    });
+
+    it('TestCaseSchema accepts ruleStatuses keyed by any rule id but only the 3 statuses', () => {
+      const base = { id: 'c', title: 't', description: 'd', isHypothetical: true, answers: {} };
+      expect(
+        CasesSchema.safeParse([{ ...base, expected: { ruleStatuses: { rule_a: 'violated', rule_b: 'undetermined' } } }]).success
+      ).toBe(true);
+      expect(CasesSchema.safeParse([{ ...base, expected: { ruleStatuses: { rule_a: 'maybe' } } }]).success).toBe(false);
     });
   });
 

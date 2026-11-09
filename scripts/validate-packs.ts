@@ -1,6 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import { z } from 'zod';
 import { PackDefinitionSchema, CasesSchema } from '../lib/engine/schema';
+
+/** zod 4: readable "✖ message → at path" lines instead of the raw JSON issue list. */
+function formatError(err: unknown): string {
+  if (err instanceof z.ZodError) return z.prettifyError(err);
+  return err instanceof Error ? err.message : String(err);
+}
 
 function validateAllPacks() {
   const packsDir = path.resolve(process.cwd(), 'packs');
@@ -38,9 +45,9 @@ function validateAllPacks() {
       const packData = JSON.parse(rawJson);
       const validatedPack = PackDefinitionSchema.parse(packData);
       console.log(`  [OK] pack.json is valid (${validatedPack.questions.length} questions, ${validatedPack.rules.length} rules)`);
-    } catch (err: any) {
+    } catch (err) {
       console.error(`  [FAIL] pack.json schema validation error in ${dir.name}:`);
-      console.error(err.message || err);
+      console.error(formatError(err));
       totalErrors++;
     }
 
@@ -64,9 +71,9 @@ function validateAllPacks() {
         const casesData = JSON.parse(rawCases);
         const validatedCases = CasesSchema.parse(casesData);
         console.log(`  [OK] cases.json is valid (${validatedCases.length} test cases, all marked hypothetical)`);
-      } catch (err: any) {
+      } catch (err) {
         console.error(`  [FAIL] cases.json schema validation error in ${dir.name}:`);
-        console.error(err.message || err);
+        console.error(formatError(err));
         totalErrors++;
       }
     }

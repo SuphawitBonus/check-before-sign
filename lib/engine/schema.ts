@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const OfficialSourceSchema = z.object({
   title: z.string().min(1, 'ต้องระบุชื่อเอกสารทางการ'),
-  url: z.string().url('URL แหล่งที่มาต้องเป็น URL ที่ถูกต้อง'),
+  url: z.url('URL แหล่งที่มาต้องเป็น URL ที่ถูกต้อง'),
   gazetteRef: z.string().min(1, 'ต้องระบุเลขเล่ม ตอน หรือการอ้างอิงราชกิจจานุเบกษา'),
   announcementDate: z.string().optional(),
   effectiveDate: z.string().min(1, 'ต้องระบุวันที่มีผลใช้บังคับ'),
@@ -11,7 +11,7 @@ export const OfficialSourceSchema = z.object({
 export const HelpChannelSchema = z.object({
   name: z.string().min(1, 'ต้องระบุชื่อช่องทางช่วยเหลือ'),
   tel: z.string().optional(),
-  url: z.string().url('URL ช่องทางช่วยเหลือต้องถูกต้อง').optional(),
+  url: z.url('URL ช่องทางช่วยเหลือต้องถูกต้อง').optional(),
   description: z.string().optional(),
 });
 
@@ -53,7 +53,7 @@ export const QuestionSchema = z.object({
 export const LegalRefSchema = z.object({
   clause: z.string().min(1, 'ต้องระบุข้อหรือมาตรากฎหมาย'),
   verbatim: z.string().min(1, 'ต้องระบุข้อความตัวบทจริงจากทางการ'),
-  sourceUrl: z.string().url('URL ตัวบทต้องถูกต้อง'),
+  sourceUrl: z.url('URL ตัวบทต้องถูกต้อง'),
 });
 
 export const RuleDefinitionSchema = z.object({
@@ -104,15 +104,15 @@ export const TestCaseSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   isHypothetical: z.literal(true, {
-    errorMap: () => ({ message: 'ชุดทดสอบต้องระบุ isHypothetical: true (เป็นตัวอย่างแต่งขึ้น)' }),
+    error: 'ชุดทดสอบต้องระบุ isHypothetical: true (เป็นตัวอย่างแต่งขึ้น)',
   }),
-  answers: z.record(z.any()),
+  answers: z.record(z.string(), z.any()),
   expected: z.object({
     isOutOfScope: z.boolean().optional(),
     violatedCount: z.number().optional(),
     compliantCount: z.number().optional(),
     undeterminedCount: z.number().optional(),
-    ruleStatuses: z.record(z.enum(['violated', 'compliant', 'undetermined'])).optional(),
+    ruleStatuses: z.record(z.string(), z.enum(['violated', 'compliant', 'undetermined'])).optional(),
   }),
 });
 

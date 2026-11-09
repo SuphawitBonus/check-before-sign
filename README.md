@@ -26,19 +26,23 @@
 
 ## 2. ภาพหน้าจอระบบ (Screenshots)
 
-### 2.1 หน้าจอ Desktop (เดสก์ท็อป)
-| หน้าแรก (Home & Pack Selection) | หน้าตรวจสัญญา (Questionnaire Form) |
-| :---: | :---: |
-| ![Desktop Home](docs/screenshots/desktop-home.png) | ![Desktop Check Form](docs/screenshots/desktop-check-rental.png) |
+ถ่ายจาก production build (`npm run build && npm start`) เมื่อ 9 พ.ย. 2569 ดีไซน์ตาม [DESIGN.md](DESIGN.md) ภาพหน้าผลใช้คำตอบตัวอย่างที่แต่งขึ้น (ขัด 4 / ไม่ขัด 11 / บอกไม่ได้ 3)
 
-| หน้าผลการตรวจสัญญา (Result View) | หน้าระงับการตรวจเมื่ออยู่นอกขอบเขต (Out of Scope) |
+### 2.1 หน้าจอ Desktop (1366px)
+| หน้าแรก | หน้าคำถาม |
 | :---: | :---: |
-| ![Desktop Result](docs/screenshots/desktop-result-screen.png) | ![Desktop Out of Scope](docs/screenshots/desktop-out-of-scope.png) |
+| ![หน้าแรก เดสก์ท็อป](docs/screenshots/readme/desktop-1366-home.png) | ![หน้าคำถาม เดสก์ท็อป](docs/screenshots/readme/desktop-1366-question.png) |
 
-### 2.2 หน้าจอมือถือ Responsive (Mobile 375px)
-| หน้าแรกมือถือ | ฟอร์มตอบคำถาม | หน้าผลตรวจบนมือถือ |
-| :---: | :---: | :---: |
-| ![Mobile Home](docs/screenshots/mobile-home-375px.png) | ![Mobile Form](docs/screenshots/mobile-check-rental-375px.png) | ![Mobile Result](docs/screenshots/mobile-result-screen-375px.png) |
+| หน้าผลตรวจ (มีทั้ง 3 ผล) | หยุดถามกลางทาง (สัญญาทำก่อนวันมีผล) |
+| :---: | :---: |
+| ![หน้าผล เดสก์ท็อป](docs/screenshots/readme/desktop-1366-result.png) | ![หยุดถามกลางทาง เดสก์ท็อป](docs/screenshots/readme/desktop-1366-ended-early.png) |
+
+### 2.2 หน้าจอมือถือ (375px)
+| หน้าแรก | หน้าคำถาม | หน้าผลตรวจ | หยุดถามกลางทาง |
+| :---: | :---: | :---: | :---: |
+| ![หน้าแรก มือถือ](docs/screenshots/readme/mobile-375-home.png) | ![หน้าคำถาม มือถือ](docs/screenshots/readme/mobile-375-question.png) | ![หน้าผล มือถือ](docs/screenshots/readme/mobile-375-result.png) | ![หยุดถามกลางทาง มือถือ](docs/screenshots/readme/mobile-375-ended-early.png) |
+
+ภาพหน้าจอเต็มหน้าและภาพก่อน/หลังอยู่ใน [docs/report-3-ui-refresh.md](docs/report-3-ui-refresh.md)
 
 ---
 

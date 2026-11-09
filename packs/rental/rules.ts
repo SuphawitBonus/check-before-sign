@@ -3,7 +3,11 @@ import {
   ScopeEvaluator,
   RuleEvaluator,
   RuleEvalOutput,
+  PackDefinition,
+  QuestionnaireEnd,
 } from '../../lib/engine/types';
+import { getQuestionnaireEnd } from '../../lib/engine/evaluator';
+import rentalPackJson from './pack.json';
 
 /**
  * Rental pack — deterministic evaluators for the OCPB contract-control notice B.E. 2568
@@ -31,40 +35,32 @@ function isUnsure(value: unknown): boolean {
   return value === undefined || value === null || value === '' || value === UNSURE;
 }
 
-const LEGACY_EXPLANATION =
-  'สัญญาที่ทำก่อนวันที่ 4 กันยายน 2568 ยังอยู่ภายใต้ประกาศคณะกรรมการว่าด้วยสัญญา พ.ศ. 2562 ต่อไปจนกว่าจะสิ้นสุดสัญญา (ข้อ 10 ของประกาศ พ.ศ. 2568) ระบบนี้ยังไม่ได้ตรวจตัวบทฉบับ พ.ศ. 2562 ที่ยืนยันแล้ว จึงไม่ตัดสินด้วยเกณฑ์ พ.ศ. 2568 และตอบว่า "บอกไม่ได้" ทั้งชุด';
-
-const BOUNDARY_EXPLANATION =
-  'วันที่ 4 กันยายน 2568 คือวันที่ครบ 90 วันนับจากวันประกาศ 6 มิถุนายน 2568 แต่ข้อ 3 ใช้คำว่า "เมื่อพ้นกำหนดเก้าสิบวัน" ระบบจึงยืนยันไม่ได้ว่าประกาศ พ.ศ. 2568 มีผลในวันนี้หรือวันถัดไป และตอบว่า "บอกไม่ได้" ทั้งชุด (ดูวิธีนับใน docs/packs/rental.md)';
-
-const UNKNOWN_DATE_EXPLANATION =
-  'ไม่ทราบว่าสัญญาทำขึ้นก่อนหรือหลังวันที่ประกาศ พ.ศ. 2568 มีผล (4 กันยายน 2568) จึงยังไม่ทราบว่าสัญญานี้อยู่ภายใต้ประกาศฉบับใด และตอบว่า "บอกไม่ได้" ทั้งชุด';
+/**
+ * The gate texts live in pack.json (q_contract_date → `endsQuestionnaire` /
+ * `unsureEndsQuestionnaire`), which is also what makes the engine stop the
+ * questionnaire early. Reading them from there keeps one source of truth.
+ */
+const CONTRACT_DATE_QUESTION = (rentalPackJson as PackDefinition).questions.find(
+  (q) => q.id === 'q_contract_date'
+);
+if (!CONTRACT_DATE_QUESTION?.unsureEndsQuestionnaire) {
+  throw new Error('rental pack.json: q_contract_date must declare unsureEndsQuestionnaire');
+}
+const UNKNOWN_DATE_END: QuestionnaireEnd = CONTRACT_DATE_QUESTION.unsureEndsQuestionnaire;
 
 /**
  * Applicability gate: the 2568 notice only governs contracts made on/after its effective date.
  * Returns an "undetermined" result when it cannot be established that the notice applies.
+ * Any answer other than `on_or_after_effective` (including missing / unknown values) is gated.
  */
 export function applicabilityGate(answers: Record<string, any>, detailed = false): RuleEvalOutput | null {
   const d = answers.q_contract_date;
   if (d === 'on_or_after_effective') return null;
 
-  if (d === 'before_effective') {
-    return {
-      status: 'undetermined',
-      reason: detailed
-        ? LEGACY_EXPLANATION
-        : 'สัญญานี้ทำก่อนประกาศ พ.ศ. 2568 มีผล จึงยังใช้ประกาศ พ.ศ. 2562 (ข้อ 10) ซึ่งระบบยังไม่ได้ตรวจ — บอกไม่ได้ (ดูคำอธิบายที่ข้อแรก)',
-    };
-  }
-  if (d === 'boundary_day') {
-    return {
-      status: 'undetermined',
-      reason: detailed ? BOUNDARY_EXPLANATION : 'สัญญานี้ทำวันที่ 4 กันยายน 2568 พอดี ซึ่งยืนยันไม่ได้ว่าประกาศ พ.ศ. 2568 มีผลแล้วหรือไม่ — บอกไม่ได้ (ดูคำอธิบายที่ข้อแรก)',
-    };
-  }
+  const end = getQuestionnaireEnd(CONTRACT_DATE_QUESTION!, d)?.end ?? UNKNOWN_DATE_END;
   return {
     status: 'undetermined',
-    reason: detailed ? UNKNOWN_DATE_EXPLANATION : 'ไม่ทราบวันที่ทำสัญญา จึงยังไม่ทราบว่าอยู่ภายใต้ประกาศฉบับใด — บอกไม่ได้ (ดูคำอธิบายที่ข้อแรก)',
+    reason: detailed ? end.reason : end.ruleReason ?? end.reason,
   };
 }
 

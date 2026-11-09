@@ -793,5 +793,21 @@
       "compliantCount": 16,
       "undeterminedCount": 2
     }
+  },
+  {
+    "id": "case-26-legacy-two-answers-only",
+    "title": "กรณีสมมุติ 26: ทำสัญญาก่อน 4 ก.ย. 2568 แล้วระบบหยุดถามทันที (ตอบแค่ 2 ข้อ)",
+    "description": "ผู้ใช้ตอบคำถามขอบเขตและวันที่ทำสัญญาเท่านั้น ระบบต้องไปหน้าผลทันทีและแสดงทุกกฎเป็นบอกไม่ได้ (engine endsQuestionnaire)",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "before_effective"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 0,
+      "undeterminedCount": 18
+    }
   }
 ]

@@ -133,6 +133,27 @@ export default function ResultView({
           </div>
         </div>
 
+        {/* Questionnaire ended early by a pack-declared answer */}
+        {evaluation.endedEarly && (
+          <div
+            role="status"
+            className="rounded-2xl border border-slate-300 bg-slate-50 p-4 sm:p-5 flex items-start gap-3"
+          >
+            <HelpCircle className="w-5 h-5 text-slate-600 shrink-0 mt-0.5" />
+            <div className="space-y-1.5 text-sm text-slate-800 leading-relaxed">
+              <div className="font-bold text-slate-900">
+                ระบบหยุดถามเพราะตรวจตามเกณฑ์นี้ไม่ได้ ทุกข้อจึงเป็น &quot;บอกไม่ได้&quot;
+              </div>
+              <div className="text-xs text-slate-600">
+                คำถาม: {evaluation.endedEarly.questionText}
+                <br />
+                คำตอบของคุณ: {evaluation.endedEarly.answerLabel}
+              </div>
+              <p>{evaluation.endedEarly.reason}</p>
+            </div>
+          </div>
+        )}
+
         {/* Counters Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Violated */}

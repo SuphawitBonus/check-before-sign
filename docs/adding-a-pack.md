@@ -21,6 +21,7 @@
 | :--- | :--- | :--- |
 | เพดานคำถามจาก 15 เป็น **25 ข้อ** | `lib/engine/schema.ts` | rental pack ต้องครอบคลุมข้อห้ามครบ 12 อนุข้อของข้อ 6.1 ประกาศ สคบ. พ.ศ. 2568 จึงมี 21 คำถาม ไม่ได้แปลว่าควรใช้ถึง 25 ข้อ ให้ตั้งคำถามเท่าที่ตัวบทจำเป็น |
 | คำตอบที่ "จบการถาม" (`endsQuestionnaire`) | `types.ts`, `schema.ts`, `evaluator.ts`, `EngineContainer.tsx`, `ResultView.tsx`, `tests/engine.test.ts`, dummy pack | ให้ pack ประกาศใน `pack.json` ได้ว่าคำตอบใดทำให้ตรวจทั้งชุดไม่ได้ ดูหัวข้อ 2.1 |
+| Next.js 16: `params` เป็น Promise และ 404 จริง | `app/check/[packId]/page.tsx` (+ `CheckPackClient.tsx`, `app/not-found.tsx`) | breaking change ของ Next 16 และให้ `/check/<id>` ที่ไม่มีอยู่จริงได้ HTTP 404 (`dynamicParams = false` + `generateStaticParams` จาก `PACK_REGISTRY`) — **pack ใหม่ที่ลงทะเบียนใน registry จะได้ route อัตโนมัติ ไม่ต้องแก้ไฟล์นี้** |
 ---
 
 ## 2. ขั้นตอนการเพิ่ม Pack ใหม่แบบ Step-by-Step

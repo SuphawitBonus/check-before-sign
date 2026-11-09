@@ -1,42 +1,32 @@
 import Link from 'next/link';
-import { ShieldCheck, Lock, BookOpen } from 'lucide-react';
+import { Lock } from 'lucide-react';
+import LogoMark from './Logo';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xl group-hover:bg-blue-600 transition shadow-sm">
-            ✓
-          </div>
-          <div>
-            <div className="font-extrabold text-lg tracking-tight text-slate-900 group-hover:text-blue-600 transition flex items-center gap-1.5">
-              เช็กก่อนเซ็น
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                Rule Engine
-              </span>
-            </div>
-            <div className="text-[11px] text-slate-500 leading-none">
-              เทียบสัญญาจริงกับตัวบทกฎหมายราชกิจจานุเบกษา
-            </div>
-          </div>
+    <header className="sticky top-0 z-50 border-b border-line bg-paper/95 backdrop-blur-sm">
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4 sm:px-6">
+        <Link href="/" className="flex items-center gap-3 rounded-lg">
+          <LogoMark className="h-9 w-9 shrink-0" />
+          <span className="leading-tight">
+            <span className="block font-display text-lg font-bold text-ink">เช็กก่อนเซ็น</span>
+            <span className="hidden text-meta text-ink-3 sm:block">เทียบสัญญากับตัวบทกฎหมาย ก่อนลงชื่อ</span>
+          </span>
         </Link>
 
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-            <Lock className="w-3.5 h-3.5 text-emerald-600" />
-            <span>คำนวณในเครื่อง 100% (ไม่บันทึกข้อมูล)</span>
-          </div>
-          <Link
-            href="/#sources"
-            className="text-xs font-medium text-slate-600 hover:text-slate-900 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition flex items-center gap-1"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-slate-400" />
-            <span className="hidden md:inline">ที่มาตัวบท</span>
+        <nav aria-label="เมนูหลัก" className="flex items-center gap-1 text-sm">
+          <span className="mr-2 hidden items-center gap-1.5 text-meta text-ink-2 md:inline-flex">
+            <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+            คำตอบอยู่ในเครื่องคุณ ไม่ถูกส่งออก
+          </span>
+          <Link href="/#limits" className="rounded-full px-3 py-2 font-medium text-ink-2 hover:bg-sunk hover:text-ink">
+            ข้อจำกัด
           </Link>
-        </div>
+          <Link href="/#how" className="hidden rounded-full px-3 py-2 font-medium sm:inline-block text-ink-2 hover:bg-sunk hover:text-ink">
+            ทำงานอย่างไร
+          </Link>
+        </nav>
       </div>
     </header>
   );
 }
-

@@ -108,6 +108,14 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
     setCurrentQuestionIndex(0);
   };
 
+  // UI convenience only: reopen the questionnaire at one question (answers kept).
+  const handleEditQuestion = (questionId: string) => {
+    const idx = questions.findIndex((q) => q.id === questionId);
+    setIsCompleted(false);
+    setIsOutOfScopeEarly(false);
+    setCurrentQuestionIndex(idx >= 0 ? idx : 0);
+  };
+
   // When the current answer ends the questionnaire, the button reads
   // "see result" instead of "next question".
   const endsAtCurrent = currentQuestion
@@ -117,7 +125,7 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
   // 1. Out of Scope View
   if (isOutOfScopeEarly) {
     return (
-      <div className="py-6 px-4 sm:px-6">
+      <div className="px-4 py-8 sm:px-6 sm:py-10">
         <OutOfScopeView
           reason={outOfScopeReason}
           helpChannels={pack.meta.helpChannels}
@@ -131,11 +139,12 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
   // 2. Result View
   if (isCompleted && evaluation) {
     return (
-      <div className="py-6 px-4 sm:px-6">
+      <div className="px-4 py-8 sm:px-6 sm:py-10">
         <ResultView
           evaluation={evaluation}
           answers={answers}
           onEditAnswers={handleEditAnswers}
+          onEditQuestion={handleEditQuestion}
           onReset={handleReset}
         />
       </div>
@@ -146,30 +155,35 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
   const progressPercent = Math.round(((currentQuestionIndex + 1) / questions.length) * 100);
 
   return (
-    <div className="max-w-2xl mx-auto py-6 px-4 sm:px-6 space-y-6">
+    <div className="mx-auto max-w-2xl space-y-6 px-4 py-8 sm:px-6 sm:py-10">
       {/* Back to home / Pack info */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
+          className="inline-flex items-center gap-1.5 rounded-full py-1 text-sm font-medium text-ink-2 hover:text-ink hover:underline"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           <span>เลือกเรื่องอื่น</span>
         </Link>
-        <div className="text-xs text-slate-500 font-medium truncate max-w-[200px] sm:max-w-xs">
-          {pack.meta.shortTitle}
-        </div>
+        <div className="max-w-[60%] truncate text-sm font-medium text-ink-3">{pack.meta.shortTitle}</div>
       </div>
 
       {/* Progress Bar */}
-      <div className="space-y-1.5">
-        <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-meta font-medium text-ink-3">
           <span>ความคืบหน้า</span>
-          <span>{progressPercent}%</span>
+          <span className="font-mono">{progressPercent}%</span>
         </div>
-        <div className="w-full h-2 bg-slate-200/80 rounded-full overflow-hidden">
+        <div
+          className="h-2 w-full overflow-hidden rounded-full bg-sunk"
+          role="progressbar"
+          aria-label="ความคืบหน้าของแบบสอบถาม"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={progressPercent}
+        >
           <div
-            className="h-full bg-blue-600 transition-all duration-300 rounded-full"
+            className="h-full rounded-full bg-primary transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           />
         </div>

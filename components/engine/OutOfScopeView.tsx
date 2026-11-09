@@ -1,6 +1,7 @@
 import React from 'react';
 import { HelpChannel } from '../../lib/engine/types';
-import { AlertTriangle, RotateCcw, PhoneCall, ExternalLink, ShieldCheck } from 'lucide-react';
+import { toArabicDigits } from '../../lib/format';
+import { MapPinOff, RotateCcw, Phone, ExternalLink } from 'lucide-react';
 
 interface OutOfScopeViewProps {
   reason: string;
@@ -9,78 +10,55 @@ interface OutOfScopeViewProps {
   packTitle: string;
 }
 
-export default function OutOfScopeView({
-  reason,
-  helpChannels,
-  onReset,
-  packTitle,
-}: OutOfScopeViewProps) {
+// "Out of scope" is not a verdict, so it uses neutral ink colours, not the verdict palette (DESIGN.md §1).
+export default function OutOfScopeView({ reason, helpChannels, onReset, packTitle }: OutOfScopeViewProps) {
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      {/* Notice Card */}
-      <div className="bg-white rounded-3xl border border-amber-200 shadow-sm p-6 sm:p-8 text-center space-y-5">
-        <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center mx-auto">
-          <AlertTriangle className="w-8 h-8 text-amber-700" />
-        </div>
-
+    <div className="mx-auto max-w-2xl space-y-6">
+      <section className="card space-y-5 p-6 sm:p-8">
+        <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-sunk text-ink">
+          <MapPinOff className="h-6 w-6" aria-hidden="true" />
+        </span>
         <div className="space-y-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
-            อยู่นอกขอบเขตการกำกับของประกาศฉบับนี้
-          </span>
-          <h2 className="text-2xl font-extrabold text-slate-900">
-            ระบบหยุดการตรวจสอบไว้ที่ข้อแรก
-          </h2>
+          <p className="text-sm font-medium text-ink-3">{packTitle}</p>
+          <h1 className="font-display text-[26px] font-bold leading-snug sm:text-[30px]">
+            กรณีของคุณอยู่นอกขอบเขตของประกาศฉบับนี้
+          </h1>
         </div>
 
-        {/* Reason explanation */}
-        <div className="bg-amber-50/70 rounded-2xl p-5 border border-amber-200/60 text-left text-sm text-amber-950 leading-relaxed">
-          <p className="font-semibold mb-1 text-amber-900">เหตุผลที่ไม่อยู่ในขอบเขต:</p>
-          <p>{reason}</p>
+        <div className="rounded-xl bg-sunk p-4 leading-relaxed text-ink">
+          <p className="mb-1 font-semibold">เหตุผล</p>
+          <p>{toArabicDigits(reason)}</p>
         </div>
 
-        <p className="text-xs text-slate-500 leading-relaxed max-w-lg mx-auto">
-          ตามหลักการที่โปร่งใส หากสถานการณ์ของคุณไม่อยู่ในนิยามของกฎหมายฉบับนี้ ระบบจะไม่นำกฎเกณฑ์มาตรวจต่อเพื่อป้องกันความเข้าใจผิดในสิทธิและหน้าที่
+        <p className="max-w-prose text-sm leading-relaxed text-ink-2">
+          ระบบจึงไม่นำข้อกำหนดของประกาศนี้มาตรวจต่อ เพื่อไม่ให้เข้าใจผิดเรื่องสิทธิและหน้าที่ของคุณ
+          ถ้าตอบข้อแรกผิด กดปุ่มด้านล่างเพื่อเริ่มใหม่
         </p>
 
-        {/* Reset button */}
-        <div className="pt-2">
-          <button
-            type="button"
-            onClick={onReset}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition shadow-sm"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>กลับไปเลือกคำตอบใหม่</span>
-          </button>
-        </div>
-      </div>
+        <button type="button" onClick={onReset} className="btn-primary">
+          <RotateCcw className="h-4 w-4" aria-hidden="true" />
+          <span>กลับไปเลือกคำตอบใหม่</span>
+        </button>
+      </section>
 
-      {/* Official Help Channels */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-        <div className="flex items-center gap-2 text-slate-900 font-bold text-base">
-          <ShieldCheck className="w-5 h-5 text-blue-600" />
-          <span>ช่องทางติดต่อสอบถามหรือขอความช่วยเหลือทางการ</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <section aria-labelledby="oos-help" className="card space-y-4 p-6">
+        <h2 id="oos-help" className="font-display text-lg font-bold">
+          สอบถามหรือขอความช่วยเหลือ
+        </h2>
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {helpChannels.map((ch, idx) => (
-            <div
-              key={idx}
-              className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 flex flex-col justify-between"
-            >
+            <li key={idx} className="flex flex-col justify-between rounded-xl border border-line bg-paper p-4">
               <div>
-                <div className="font-bold text-sm text-slate-800">{ch.name}</div>
-                {ch.description && (
-                  <div className="text-xs text-slate-500 mt-1">{ch.description}</div>
-                )}
+                <div className="font-semibold text-ink">{ch.name}</div>
+                {ch.description && <div className="mt-1 text-sm text-ink-2">{ch.description}</div>}
               </div>
-              <div className="mt-3 flex items-center gap-3">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 {ch.tel && (
-                  <a
-                    href={`tel:${ch.tel.replace(/[^0-9]/g, '')}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-200"
-                  >
-                    <PhoneCall className="w-3.5 h-3.5" />
-                    <span>โทร {ch.tel}</span>
+                  <a href={`tel:${ch.tel.replace(/[^0-9]/g, '')}`} className="btn-primary min-h-[40px] px-4 py-2 text-sm">
+                    <Phone className="h-4 w-4" aria-hidden="true" />
+                    <span>
+                      โทร <span className="font-mono">{ch.tel}</span>
+                    </span>
                   </a>
                 )}
                 {ch.url && (
@@ -88,18 +66,18 @@ export default function OutOfScopeView({
                     href={ch.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900"
+                    className="btn-secondary min-h-[40px] px-4 py-2 text-sm"
                   >
                     <span>เว็บไซต์</span>
-                    <ExternalLink className="w-3 h-3 text-slate-400" />
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span className="sr-only">(เปิดในแท็บใหม่)</span>
                   </a>
                 )}
               </div>
-            </div>
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </section>
     </div>
   );
 }
-

@@ -44,7 +44,7 @@ export const FUTURE_PACKS: FuturePackPreview[] = [
     id: 'labor-rights',
     title: 'สิทธิแรงงานและการจ้างงาน',
     shortTitle: 'สิทธิ์ลูกจ้าง',
-    description: 'ตรวจสัญญาจ้างงาน ค่าล่วงเวลา (OT) การบอกเลิกจ้าง และเงินชดเชยตาม พ.ร.บ. คุ้มครองแรงงาน พ.ศ. ๒๕๔๑',
+    description: 'ตรวจสัญญาจ้างงาน ค่าล่วงเวลา (OT) การบอกเลิกจ้าง และเงินชดเชยตาม พ.ร.บ. คุ้มครองแรงงาน พ.ศ. 2541',
     category: 'แรงงานและการจ้างงาน',
     iconName: 'Briefcase',
     plannedSession: 'เฟสถัดไป',

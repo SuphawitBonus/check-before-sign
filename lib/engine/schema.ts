@@ -73,7 +73,7 @@ export const PackMetadataSchema = z.object({
 
 export const PackDefinitionSchema = z.object({
   meta: PackMetadataSchema,
-  questions: z.array(QuestionSchema).min(1, 'ต้องมีคำถามอย่างน้อย 1 ข้อ').max(15, 'คำถามต้องไม่เกินขีดจำกัด'),
+  questions: z.array(QuestionSchema).min(1, 'ต้องมีคำถามอย่างน้อย 1 ข้อ').max(25, 'คำถามต้องไม่เกินขีดจำกัด'),
   rules: z.array(RuleDefinitionSchema).min(1, 'ต้องมีกฎอย่างน้อย 1 ข้อ'),
 }).refine((data) => {
   // Verify that the scope question exists

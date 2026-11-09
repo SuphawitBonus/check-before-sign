@@ -1,23 +1,21 @@
 import Link from 'next/link';
-import { ArrowLeft, AlertCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="max-w-xl mx-auto py-16 px-4 text-center space-y-4">
-      <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center mx-auto">
-        <AlertCircle className="w-7 h-7" />
-      </div>
-      <h1 className="text-2xl font-bold text-slate-900">ไม่พบหน้านี้ในระบบ</h1>
-      <p className="text-sm text-slate-600">
-        หมวดสัญญาหรือหน้าที่คุณเปิดอาจยังไม่เปิดให้บริการ หรือลิงก์ไม่ถูกต้อง
+    <div className="mx-auto max-w-xl space-y-5 px-4 py-20 sm:py-28">
+      <p className="font-mono text-sm font-medium text-ink-3">404</p>
+      <h1 className="font-display text-[28px] font-bold leading-snug sm:text-[36px]">ไม่พบหน้านี้ในระบบ</h1>
+      <p className="max-w-prose text-ink-2">
+        ลิงก์อาจพิมพ์ผิด หรือเป็นเรื่องที่ยังไม่เปิดให้ตรวจ ตอนนี้ตรวจได้เฉพาะสัญญาเช่าที่อยู่อาศัย
       </p>
-      <div className="pt-2">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition"
-        >
-          <ArrowLeft className="w-4 h-4" />
+      <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+        <Link href="/" className="btn-primary">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           <span>กลับหน้าแรก</span>
+        </Link>
+        <Link href="/check/rental" className="btn-secondary">
+          ตรวจสัญญาเช่า
         </Link>
       </div>
     </div>

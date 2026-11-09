@@ -1,60 +1,78 @@
 [
   {
     "id": "case-01-fully-compliant",
-    "title": "กรณีสมมุติ 1: สัญญามาตรฐาน สคบ. ครบถ้วน",
-    "description": "ตัวอย่างแต่งขึ้น: สัญญาเช่าอพาร์ตเมนต์ที่ปฏิบัติตามประกาศ สคบ. อย่างถูกต้องทุกข้อ ค่าน้ำค่าไฟตามบิลจริง คืนเงินใน 7 วัน",
+    "title": "กรณีสมมุติ 1: สัญญาตรงตามประกาศ พ.ศ. 2568 ครบทุกข้อ",
+    "description": "ตัวอย่างแต่งขึ้น: สัญญาเช่าอพาร์ตเมนต์ระยะสั้นที่ทำหลัง 4 ก.ย. 2568 เงินประกัน 1 + ค่าเช่าล่วงหน้า 1 งวด ค่าน้ำค่าไฟตามบิลจริง คืนเงินประกัน 7/14 วัน",
     "isHypothetical": true,
     "answers": {
       "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
       "q_deposit": 1,
       "q_advance_rent": 1,
-      "q_combined_deposit_advance": "not_over_3",
       "q_electricity_rate": "actual_rate",
       "q_water_rate": "actual_rate",
       "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
       "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
     },
     "expected": {
       "isOutOfScope": false,
       "violatedCount": 0,
-      "compliantCount": 12,
+      "compliantCount": 18,
       "undeterminedCount": 0
     }
   },
   {
     "id": "case-02-classic-exploitative",
-    "title": "กรณีสมมุติ 2: สัญญาเอาเปรียบยอดนิยมหลายข้อ",
-    "description": "ตัวอย่างแต่งขึ้น: ค่าไฟ 9 บาท ค่าน้ำ 20 บาท มัดจำ 3 เดือน ล่วงหน้า 2 เดือน ริบเงินมัดจำ เข้าตรวจห้องได้ตลอดเวลา และมีข้อความล็อกห้อง",
+    "title": "กรณีสมมุติ 2: สัญญาเอาเปรียบหลายข้อ",
+    "description": "ตัวอย่างแต่งขึ้น: ประกัน 3 + ล่วงหน้า 2 เดือน ค่าไฟ/ค่าน้ำสูงกว่าการไฟฟ้า/ประปา คืนเงินช้า ริบเงิน ห้ามผู้เช่าเลิก ผู้ให้เช่าเลิกได้ทันที เข้าห้องได้ตลอด ล็อกห้อง ปรับค่าเช่าได้ ค่าต่อสัญญา ผู้เช่ารับผิดทุกกรณี และมีข้อยกเว้นความรับผิด (ข้อนี้ระบบบอกไม่ได้)",
     "isHypothetical": true,
     "answers": {
       "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
       "q_deposit": 3,
       "q_advance_rent": 2,
-      "q_combined_deposit_advance": "over_3",
-      "q_electricity_rate": "flat_fixed_high",
-      "q_water_rate": "flat_fixed_high",
+      "q_electricity_rate": "above_actual_rate",
+      "q_water_rate": "above_actual_rate",
       "q_deposit_refund_period": "over_7_days",
-      "q_deposit_forfeiture": "has_automatic_forfeit",
-      "q_tenant_termination": "strictly_prohibited",
-      "q_lessor_termination_notice": "immediate_termination",
+      "q_deposit_refund_after_deduction": "over_14_days",
+      "q_deposit_forfeiture": "has_clause",
+      "q_tenant_termination": "prohibited",
+      "q_lessor_termination_notice": "no_notice",
+      "q_lessor_termination_disturbance": "under_7_days_or_none",
+      "q_lessor_terminate_without_breach": "has_clause",
       "q_inspection_without_notice": "unannounced_entry",
-      "q_lockout_and_seizure": "has_lockout_clause"
+      "q_lockout_and_seizure": "has_clause",
+      "q_exemption_of_liability": "has_clause",
+      "q_rent_change_during_term": "has_clause",
+      "q_renewal_fee": "has_clause",
+      "q_normal_wear_liability": "has_clause",
+      "q_force_majeure_liability": "has_clause"
     },
     "expected": {
       "isOutOfScope": false,
-      "violatedCount": 11,
+      "violatedCount": 16,
       "compliantCount": 1,
-      "undeterminedCount": 0
+      "undeterminedCount": 1
     }
   },
   {
-    "id": "case-03-out-of-scope-university-dorm",
-    "title": "กรณีสมมุติ 3: หอพักในมหาวิทยาลัย (อยู่นอกขอบเขต)",
-    "description": "ตัวอย่างแต่งขึ้น: หอพักนักศึกษาของมหาวิทยาลัย กำกับโดย พ.ร.บ. หอพัก ไม่อยู่ในอำนาจประกาศ สคบ. สัญญาต้องถูกตัดจบเป็น Out of Scope",
+    "id": "case-03-out-of-scope-dormitory",
+    "title": "กรณีสมมุติ 3: หอพักตามกฎหมายว่าด้วยหอพัก (นอกขอบเขต)",
+    "description": "ตัวอย่างแต่งขึ้น: หอพักที่อยู่ภายใต้กฎหมายว่าด้วยหอพัก ไม่อยู่ในนิยาม \"อาคาร\" ข้อ 4 ต้องตัดจบเป็นนอกขอบเขต",
     "isHypothetical": true,
     "answers": {
       "q_scope": "out_dorm_act"
@@ -67,9 +85,9 @@
     }
   },
   {
-    "id": "case-04-out-of-scope-single-unit-landlord",
-    "title": "กรณีสมมุติ 4: เจ้าของคอนโดปล่อยเช่าห้องเดียว (ไม่ถึงเกณฑ์)",
-    "description": "ตัวอย่างแต่งขึ้น: เจ้าของห้องชุดปล่อยเช่าเพียงห้องเดียว ไม่ถึงเกณฑ์ผู้ประกอบธุรกิจ 3-5 หน่วยของ สคบ. ไม่อยู่ในขอบเขต",
+    "id": "case-04-out-of-scope-few-units",
+    "title": "กรณีสมมุติ 4: ผู้ให้เช่ามีห้องเช่าเพียง 1–2 หน่วย",
+    "description": "ตัวอย่างแต่งขึ้น: เจ้าของห้องชุดปล่อยเช่าห้องเดียว ต่ำกว่าเกณฑ์ตั้งแต่ 3 หน่วยขึ้นไป",
     "isHypothetical": true,
     "answers": {
       "q_scope": "out_few_units"
@@ -83,8 +101,8 @@
   },
   {
     "id": "case-05-out-of-scope-commercial",
-    "title": "กรณีสมมุติ 5: เช่าอาคารเพื่อเปิดร้านค้าหรือสำนักงาน",
-    "description": "ตัวอย่างแต่งขึ้น: เช่าตึกแถวเพื่อเปิดร้านกาแฟและออฟฟิศ ไม่ได้เช่าเพื่ออยู่อาศัยส่วนตัว จึงไม่อยู่ในขอบเขต",
+    "title": "กรณีสมมุติ 5: เช่าเพื่อเปิดร้านหรือสำนักงาน",
+    "description": "ตัวอย่างแต่งขึ้น: เช่าตึกแถวเพื่อเปิดร้านกาแฟ ไม่ได้เช่าเพื่ออยู่อาศัย",
     "isHypothetical": true,
     "answers": {
       "q_scope": "out_commercial"
@@ -97,243 +115,9 @@
     }
   },
   {
-    "id": "case-06-boundary-deposit-1-advance-1",
-    "title": "กรณีสมมุติ 6: ค่าขอบล่าง มัดจำ 1 เดือน ล่วงหน้า 1 เดือน",
-    "description": "ตัวอย่างแต่งขึ้น: มัดจำ 1 เดือน ล่วงหน้า 1 เดือน รวม 2 เดือน พอดีเกณฑ์มาตรฐาน",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 1,
-      "q_advance_rent": 1,
-      "q_combined_deposit_advance": "not_over_3",
-      "q_electricity_rate": "actual_rate",
-      "q_water_rate": "actual_rate",
-      "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
-      "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 0,
-      "compliantCount": 12,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-07-boundary-deposit-2-advance-1-total-3",
-    "title": "กรณีสมมุติ 7: ค่าขอบบนพอดี มัดจำ 2 เดือน ล่วงหน้า 1 เดือน รวม 3 เดือน",
-    "description": "ตัวอย่างแต่งขึ้น: มัดจำ 2 เดือน ล่วงหน้า 1 เดือน รวม 3 เดือน พอดีเพดานสูงสุดตามประกาศ พ.ศ. 2568",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 2,
-      "q_advance_rent": 1,
-      "q_combined_deposit_advance": "not_over_3",
-      "q_electricity_rate": "actual_rate",
-      "q_water_rate": "actual_rate",
-      "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
-      "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 0,
-      "compliantCount": 12,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-08-boundary-exceeded-total-3-point-5",
-    "title": "กรณีสมมุติ 8: ค่าเกินขอบบน มัดจำ 2.5 เดือน ล่วงหน้า 1 เดือน รวม 3.5 เดือน",
-    "description": "ตัวอย่างแต่งขึ้น: มัดจำ 2.5 เดือน ล่วงหน้า 1 เดือน รวม 3.5 เดือน เกินเพดาน 3 เดือนของประกาศ สคบ.",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 2.5,
-      "q_advance_rent": 1,
-      "q_combined_deposit_advance": "over_3",
-      "q_electricity_rate": "actual_rate",
-      "q_water_rate": "actual_rate",
-      "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
-      "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 2,
-      "compliantCount": 10,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-09-advance-rent-exceeded",
-    "title": "กรณีสมมุติ 9: ค่าเช่าล่วงหน้าเกิน 1 เดือน (มัดจำ 1 เดือน ล่วงหน้า 2 เดือน)",
-    "description": "ตัวอย่างแต่งขึ้น: แม้รวมเงินจะได้ 3 เดือน แต่กฎหมายจำกัดค่าเช่าล่วงหน้าไว้ไม่เกิน 1 เดือน จึงขัดในข้อค่าเช่าล่วงหน้า",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 1,
-      "q_advance_rent": 2,
-      "q_combined_deposit_advance": "not_over_3",
-      "q_electricity_rate": "actual_rate",
-      "q_water_rate": "actual_rate",
-      "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
-      "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 1,
-      "compliantCount": 11,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-10-high-electricity-only",
-    "title": "กรณีสมมุติ 10: สัญญาดีหมดยกเว้นค่าไฟหน่วยละ 8 บาท",
-    "description": "ตัวอย่างแต่งขึ้น: ทุกข้อผ่านหมด ยกเว้นข้อกำหนดค่าไฟคิดหน่วยละ 8 บาท ขัดประกาศข้อ ๕",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 1,
-      "q_advance_rent": 1,
-      "q_combined_deposit_advance": "not_over_3",
-      "q_electricity_rate": "flat_fixed_high",
-      "q_water_rate": "actual_rate",
-      "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
-      "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 1,
-      "compliantCount": 11,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-11-high-water-only",
-    "title": "กรณีสมมุติ 11: สัญญาดีหมดยกเว้นค่าน้ำหน่วยละ 22 บาท",
-    "description": "ตัวอย่างแต่งขึ้น: ทุกข้อผ่านหมด ยกเว้นค่าน้ำประปาคิดหน่วยละ 22 บาท ขัดประกาศข้อ ๕",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 1,
-      "q_advance_rent": 1,
-      "q_combined_deposit_advance": "not_over_3",
-      "q_electricity_rate": "actual_rate",
-      "q_water_rate": "flat_fixed_high",
-      "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
-      "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 1,
-      "compliantCount": 11,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-12-privacy-and-lockout-violations",
-    "title": "กรณีสมมุติ 12: ค่าห้องปกติ แต่มีข้อความแอบเข้าตรวจห้องและล็อกห้อง",
-    "description": "ตัวอย่างแต่งขึ้น: มีข้อสัญญาละเมิดความเป็นส่วนตัวเข้าตรวจห้องได้ตลอดเวลา และข้อความล็อกห้องตัดไฟเมื่อผิดนัด",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 1,
-      "q_advance_rent": 1,
-      "q_combined_deposit_advance": "not_over_3",
-      "q_electricity_rate": "actual_rate",
-      "q_water_rate": "actual_rate",
-      "q_deposit_refund_period": "within_7_days",
-      "q_deposit_forfeiture": "no_automatic_forfeit",
-      "q_tenant_termination": "allowed_with_notice",
-      "q_lessor_termination_notice": "proper_notice",
-      "q_inspection_without_notice": "unannounced_entry",
-      "q_lockout_and_seizure": "has_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 2,
-      "compliantCount": 10,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-13-deposit-delay-and-termination-block",
-    "title": "กรณีสมมุติ 13: คืนเงินประกันช้า 45 วัน ริบมัดจำ และห้ามบอกเลิกสัญญา",
-    "description": "ตัวอย่างแต่งขึ้น: สัญญาคืนมัดจำช้า 45 วัน สัญญาระบุริบเงินประกันทั้งหมด และห้ามผู้เช่าย้ายออกก่อนครบสัญญา",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": 1,
-      "q_advance_rent": 1,
-      "q_combined_deposit_advance": "not_over_3",
-      "q_electricity_rate": "actual_rate",
-      "q_water_rate": "actual_rate",
-      "q_deposit_refund_period": "over_7_days",
-      "q_deposit_forfeiture": "has_automatic_forfeit",
-      "q_tenant_termination": "strictly_prohibited",
-      "q_lessor_termination_notice": "immediate_termination",
-      "q_inspection_without_notice": "notice_required",
-      "q_lockout_and_seizure": "no_lockout_clause"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 4,
-      "compliantCount": 8,
-      "undeterminedCount": 0
-    }
-  },
-  {
-    "id": "case-14-all-unsure",
-    "title": "กรณีสมมุติ 14: ผู้ใช้ระบุไม่แน่ใจทุกข้อ (ยกเว้นขอบเขต)",
-    "description": "ตัวอย่างแต่งขึ้น: ผู้เช่าอยู่หอพักที่เข้าข่าย แต่จำรายละเอียดในสัญญาไม่ได้เลยและกดไม่แน่ใจทุกข้อ ผลทุกข้อต้องเป็น undetermined ห้ามเดา",
-    "isHypothetical": true,
-    "answers": {
-      "q_scope": "in_scope",
-      "q_deposit": "__unsure__",
-      "q_advance_rent": "__unsure__",
-      "q_combined_deposit_advance": "__unsure__",
-      "q_electricity_rate": "__unsure__",
-      "q_water_rate": "__unsure__",
-      "q_deposit_refund_period": "__unsure__",
-      "q_deposit_forfeiture": "__unsure__",
-      "q_tenant_termination": "__unsure__",
-      "q_lessor_termination_notice": "__unsure__",
-      "q_inspection_without_notice": "__unsure__",
-      "q_lockout_and_seizure": "__unsure__"
-    },
-    "expected": {
-      "isOutOfScope": false,
-      "violatedCount": 0,
-      "compliantCount": 1,
-      "undeterminedCount": 11
-    }
-  },
-  {
-    "id": "case-15-out-of-scope-hotel",
-    "title": "กรณีสมมุติ 15: ที่พักรายวัน / โรงแรม (อยู่นอกขอบเขต)",
-    "description": "ตัวอย่างแต่งขึ้น: ผู้ใช้พักในโรงแรมรายวัน ไม่อยู่ในขอบเขตประกาศ สคบ. สัญญาควบคุมที่อยู่อาศัย",
+    "id": "case-06-out-of-scope-hotel",
+    "title": "กรณีสมมุติ 6: ที่พักรายวันตามกฎหมายโรงแรม",
+    "description": "ตัวอย่างแต่งขึ้น: ห้องพักรายวันของโรงแรมที่มีใบอนุญาต ไม่อยู่ในนิยาม \"อาคาร\"",
     "isHypothetical": true,
     "answers": {
       "q_scope": "out_hotel"
@@ -344,6 +128,670 @@
       "compliantCount": 0,
       "undeterminedCount": 0
     }
+  },
+  {
+    "id": "case-07-advance-2-deposit-1-compliant",
+    "title": "กรณีสมมุติ 7: ค่าเช่าล่วงหน้า 2 เดือน + เงินประกัน 1 เดือน ต้องไม่ขัด",
+    "description": "ตัวอย่างแต่งขึ้น: รวม 3 เดือน เท่ากับเพดานข้อ 6.1(2) พอดี ไม่เกิน และตัวบทไม่มีเพดานค่าเช่าล่วงหน้า 1 เดือนแยกต่างหาก",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 2,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 18,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-08-boundary-deposit-2-advance-1",
+    "title": "กรณีสมมุติ 8: ค่าตรงขอบ เงินประกัน 2 + ค่าเช่าล่วงหน้า 1 = 3 เดือน",
+    "description": "ตัวอย่างแต่งขึ้น: รวม 3 เดือนพอดี ไม่ขัด",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 2,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 18,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-09-over-cap-by-half-month",
+    "title": "กรณีสมมุติ 9: เกินเพดานครึ่งเดือน (2.5 + 1 = 3.5)",
+    "description": "ตัวอย่างแต่งขึ้น: รวม 3.5 เดือน เกินเพดาน 3 เดือน",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 2.5,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-10-advance-unknown-undetermined",
+    "title": "กรณีสมมุติ 10: ไม่ทราบค่าเช่าล่วงหน้า ต้องบอกไม่ได้",
+    "description": "ตัวอย่างแต่งขึ้น: เงินประกัน 1 เดือน แต่ไม่ทราบค่าเช่าล่วงหน้า ห้ามสมมติค่า ผลต้องเป็นบอกไม่ได้",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": "__unsure__",
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 17,
+      "undeterminedCount": 1
+    }
+  },
+  {
+    "id": "case-11-deposit-alone-over-cap",
+    "title": "กรณีสมมุติ 11: เงินประกันเพียงอย่างเดียวเกินเพดาน แม้ไม่ทราบค่าเช่าล่วงหน้า",
+    "description": "ตัวอย่างแต่งขึ้น: เงินประกัน 4 เดือน เกิน 3 เดือนแน่นอนไม่ว่าค่าเช่าล่วงหน้าจะเป็นเท่าใด",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 4,
+      "q_advance_rent": "__unsure__",
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-12-long-term-annual-compliant",
+    "title": "กรณีสมมุติ 12: เช่าระยะยาว ค่าเช่ารายปี รวม 1 ปีพอดี",
+    "description": "ตัวอย่างแต่งขึ้น: แบบ ข ข้อ 6.2(3) เงินประกัน 0.5 + ล่วงหน้า 0.5 ปี = 1 ปี ไม่เกินเพดาน",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "long_annual",
+      "q_deposit": 0.5,
+      "q_advance_rent": 0.5,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 18,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-13-long-term-annual-over",
+    "title": "กรณีสมมุติ 13: เช่าระยะยาว ค่าเช่ารายปี รวมเกิน 1 ปี",
+    "description": "ตัวอย่างแต่งขึ้น: เงินประกัน 1 + ล่วงหน้า 0.5 ปี = 1.5 ปี เกินเพดานข้อ 6.2(3)",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "long_annual",
+      "q_deposit": 1,
+      "q_advance_rent": 0.5,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-14-short-term-annual-rent",
+    "title": "กรณีสมมุติ 14: เช่าระยะสั้น ค่าเช่ารายปี (ตัวบทไม่มีเพดาน)",
+    "description": "ตัวอย่างแต่งขึ้น: ข้อ 6.1(2) กำหนดเพดานเฉพาะค่าเช่ารายเดือน จึงบอกไม่ได้",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_annual",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 17,
+      "undeterminedCount": 1
+    }
+  },
+  {
+    "id": "case-15-legacy-contract-before-effective-date",
+    "title": "กรณีสมมุติ 15: ทำสัญญาก่อน 4 ก.ย. 2568 — บอกไม่ได้ทั้งชุด",
+    "description": "ตัวอย่างแต่งขึ้น: แม้ตอบข้อสัญญาที่จะขัดกฎหมายปี 2568 หลายข้อ ก็ห้ามตัดสิน เพราะสัญญาก่อนวันใช้บังคับยังใช้ประกาศ พ.ศ. 2562 (ข้อ 10) ที่ระบบยังไม่ได้ตรวจ",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "before_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 5,
+      "q_advance_rent": 5,
+      "q_electricity_rate": "above_actual_rate",
+      "q_water_rate": "above_actual_rate",
+      "q_deposit_refund_period": "over_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "has_clause",
+      "q_tenant_termination": "prohibited",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "has_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 0,
+      "undeterminedCount": 18
+    }
+  },
+  {
+    "id": "case-16-boundary-day",
+    "title": "กรณีสมมุติ 16: ทำสัญญาวันที่ 4 ก.ย. 2568 พอดี — บอกไม่ได้ทั้งชุด",
+    "description": "ตัวอย่างแต่งขึ้น: ข้อ 3 \"เมื่อพ้นกำหนดเก้าสิบวัน\" ยืนยันไม่ได้ว่ามีผลวันที่ 4 หรือ 5",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "boundary_day",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "has_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 0,
+      "undeterminedCount": 18
+    }
+  },
+  {
+    "id": "case-17-unsure-contract-date",
+    "title": "กรณีสมมุติ 17: ไม่แน่ใจวันที่ทำสัญญา — บอกไม่ได้ทั้งชุด",
+    "description": "ตัวอย่างแต่งขึ้น: ไม่ทราบว่าสัญญาอยู่ภายใต้ประกาศฉบับใด",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "__unsure__",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "has_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 0,
+      "undeterminedCount": 18
+    }
+  },
+  {
+    "id": "case-18-refund-in-working-days",
+    "title": "กรณีสมมุติ 18: คืนเงินประกัน \"7 วันทำการ\"",
+    "description": "ตัวอย่างแต่งขึ้น: ตัวบทนับเป็น \"วัน\" ไม่ใช่ \"วันทำการ\" จึงเลือกข้อช้ากว่า 7 วัน/วันทำการ",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "over_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-19-refund-after-deduction-30-days",
+    "title": "กรณีสมมุติ 19: หักค่าเสียหายแล้วคืนส่วนที่เหลือภายใน 30 วัน",
+    "description": "ตัวอย่างแต่งขึ้น: กรณีไม่มีความเสียหายคืน 7 วัน (ถูก) แต่กรณีหักค่าเสียหายเกิน 14 วัน (ขัด)",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "over_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-20-lessor-terminates-after-7-days-arrears",
+    "title": "กรณีสมมุติ 20: ผู้ให้เช่าบอกเลิกได้หลังค้างค่าเช่า 7 วัน",
+    "description": "ตัวอย่างแต่งขึ้น: ตัวบทไม่มีข้อยกเว้น 7 วันกรณีค้างค่าเช่า ต้องบอกกล่าวอย่างน้อย 30 วัน",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_under_30_days",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-21-disturbance-3-day-notice",
+    "title": "กรณีสมมุติ 21: รบกวนผู้เช่ารายอื่น บอกเลิกได้หลังแจ้ง 3 วัน",
+    "description": "ตัวอย่างแต่งขึ้น: ต้องบอกกล่าวอย่างน้อย 7 วัน",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "under_7_days_or_none",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-22-tenant-termination-late-refund",
+    "title": "กรณีสมมุติ 22: ผู้เช่าเลิกได้ แต่คืนค่าเช่าล่วงหน้าหลัง 30 วัน",
+    "description": "ตัวอย่างแต่งขึ้น: ตัวบทให้คืนภายใน 7 วันนับแต่วันบอกเลิก",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "late_or_no_refund",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 1,
+      "compliantCount": 17,
+      "undeterminedCount": 0
+    }
+  },
+  {
+    "id": "case-23-all-unsure",
+    "title": "กรณีสมมุติ 23: ไม่แน่ใจทุกข้อ (หลังตอบขอบเขตและวันที่ทำสัญญา)",
+    "description": "ตัวอย่างแต่งขึ้น: ผู้ใช้ตอบไม่แน่ใจทุกคำถามที่เหลือ ต้องได้บอกไม่ได้ ไม่เดา",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "__unsure__",
+      "q_deposit": "__unsure__",
+      "q_advance_rent": "__unsure__",
+      "q_electricity_rate": "__unsure__",
+      "q_water_rate": "__unsure__",
+      "q_deposit_refund_period": "__unsure__",
+      "q_deposit_refund_after_deduction": "__unsure__",
+      "q_deposit_forfeiture": "__unsure__",
+      "q_tenant_termination": "__unsure__",
+      "q_lessor_termination_notice": "__unsure__",
+      "q_lessor_termination_disturbance": "__unsure__",
+      "q_lessor_terminate_without_breach": "__unsure__",
+      "q_inspection_without_notice": "__unsure__",
+      "q_lockout_and_seizure": "__unsure__",
+      "q_exemption_of_liability": "__unsure__",
+      "q_rent_change_during_term": "__unsure__",
+      "q_renewal_fee": "__unsure__",
+      "q_normal_wear_liability": "__unsure__",
+      "q_force_majeure_liability": "__unsure__"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 1,
+      "undeterminedCount": 17
+    }
+  },
+  {
+    "id": "case-24-exemption-clause-judgement",
+    "title": "กรณีสมมุติ 24: มีข้อยกเว้นความรับผิดของผู้ให้เช่า",
+    "description": "ตัวอย่างแต่งขึ้น: ข้อ 6.1(1) ห้ามเฉพาะที่ไม่มีเหตุผลสมควรเพียงพอ ระบบตัดสินแทนไม่ได้ จึงบอกไม่ได้",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "actual_rate",
+      "q_water_rate": "actual_rate",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "has_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 17,
+      "undeterminedCount": 1
+    }
+  },
+  {
+    "id": "case-25-flat-rate-utilities-unknown",
+    "title": "กรณีสมมุติ 25: ค่าน้ำค่าไฟเหมาจ่ายแต่ไม่ทราบอัตราจริง",
+    "description": "ตัวอย่างแต่งขึ้น: ยังไม่ทราบว่าสูงกว่าอัตราที่การไฟฟ้า/ประปาเรียกเก็บหรือไม่ จึงบอกไม่ได้",
+    "isHypothetical": true,
+    "answers": {
+      "q_scope": "in_scope",
+      "q_contract_date": "on_or_after_effective",
+      "q_contract_form": "short_monthly",
+      "q_deposit": 1,
+      "q_advance_rent": 1,
+      "q_electricity_rate": "flat_unknown",
+      "q_water_rate": "flat_unknown",
+      "q_deposit_refund_period": "within_7_days",
+      "q_deposit_refund_after_deduction": "within_14_days",
+      "q_deposit_forfeiture": "no_clause",
+      "q_tenant_termination": "conforms",
+      "q_lessor_termination_notice": "notice_30_days_or_more",
+      "q_lessor_termination_disturbance": "notice_7_days_or_more",
+      "q_lessor_terminate_without_breach": "no_clause",
+      "q_inspection_without_notice": "notice_required",
+      "q_lockout_and_seizure": "no_clause",
+      "q_exemption_of_liability": "no_clause",
+      "q_rent_change_during_term": "no_clause",
+      "q_renewal_fee": "no_clause",
+      "q_normal_wear_liability": "no_clause",
+      "q_force_majeure_liability": "no_clause"
+    },
+    "expected": {
+      "isOutOfScope": false,
+      "violatedCount": 0,
+      "compliantCount": 16,
+      "undeterminedCount": 2
+    }
   }
 ]
-

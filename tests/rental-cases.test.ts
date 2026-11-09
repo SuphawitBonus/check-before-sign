@@ -5,7 +5,7 @@ import rentalCasesJson from '../packs/rental/cases.json';
 import { evaluatePack } from '../lib/engine/evaluator';
 import { PackDefinition, TestCase } from '../lib/engine/types';
 
-describe('Rental Pack Cases Verification (15 ชุดตัวอย่างแต่งขึ้น)', () => {
+describe('Rental Pack Cases Verification (ชุดตัวอย่างแต่งขึ้น)', () => {
   const rentalPack = rentalPackJson as PackDefinition;
   const cases = rentalCasesJson as TestCase[];
 
@@ -38,10 +38,28 @@ describe('Rental Pack Cases Verification (15 ชุดตัวอย่าง�
     });
   });
 
-  it('summary: all 15 hypothetical cases match expected outputs 100%', () => {
-    expect(passedCasesCount).toBe(15);
+  it('has at least 15 cases and every case answers only questions that exist in pack.json', () => {
+    expect(cases.length).toBeGreaterThanOrEqual(15);
+    const qIds = new Set(rentalPack.questions.map((q) => q.id));
+    for (const c of cases) {
+      for (const key of Object.keys(c.answers)) {
+        expect(qIds.has(key), `${c.id}: unknown question ${key}`).toBe(true);
+      }
+    }
+  });
+
+  it('every in-scope case sums to the number of rules (counts are exhaustive)', () => {
+    for (const c of cases) {
+      if (c.expected.isOutOfScope) continue;
+      const { violatedCount = 0, compliantCount = 0, undeterminedCount = 0 } = c.expected;
+      expect(violatedCount + compliantCount + undeterminedCount, c.id).toBe(rentalPack.rules.length);
+    }
+  });
+
+  it('summary: all hypothetical cases match expected outputs 100%', () => {
+    expect(passedCasesCount).toBe(cases.length);
     console.log(`\n========================================`);
-    console.log(`Rental Cases Test Summary: 15 / 15 Cases Passed (100% Match)`);
+    console.log(`Rental Cases Test Summary: ${passedCasesCount} / ${cases.length} Cases Passed (100% Match)`);
     console.log(`All cases are explicitly verified as hypothetical examples.`);
     console.log(`========================================\n`);
   });

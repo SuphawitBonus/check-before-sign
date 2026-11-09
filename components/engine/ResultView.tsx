@@ -104,11 +104,11 @@ export default function ResultView({
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={handleShareLink}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition text-slate-700 shadow-sm"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-slate-300 hover:border-slate-400 hover:bg-slate-50 transition text-slate-700 shadow-sm"
             >
               {shareCopied ? (
                 <>
@@ -125,7 +125,7 @@ export default function ResultView({
             <button
               type="button"
               onClick={onEditAnswers}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm"
             >
               <RotateCcw className="w-4 h-4" />
               <span>แก้ไขคำตอบ</span>

@@ -15,11 +15,20 @@ export const HelpChannelSchema = z.object({
   description: z.string().optional(),
 });
 
+export const QuestionnaireEndSchema = z.object({
+  reason: z.string().min(1, 'ต้องระบุเหตุผลที่จบการถาม (แสดงที่หน้าผล)'),
+  ruleReason: z.string().min(1).optional(),
+});
+
 export const QuestionOptionSchema = z.object({
   label: z.string().min(1, 'ต้องระบุข้อความตัวเลือก'),
   value: z.string().min(1, 'ต้องระบุค่าตัวเลือก'),
   helpText: z.string().optional(),
   isOutOfScope: z.boolean().optional(),
+  endsQuestionnaire: QuestionnaireEndSchema.optional(),
+}).refine((opt) => !(opt.isOutOfScope && opt.endsQuestionnaire), {
+  message: 'ตัวเลือกเดียวกันต้องไม่เป็นทั้ง isOutOfScope และ endsQuestionnaire',
+  path: ['endsQuestionnaire'],
 });
 
 export const QuestionSchema = z.object({
@@ -35,6 +44,10 @@ export const QuestionSchema = z.object({
   max: z.number().optional(),
   step: z.number().optional(),
   isScopeQuestion: z.boolean().optional(),
+  unsureEndsQuestionnaire: QuestionnaireEndSchema.optional(),
+}).refine((q) => !q.unsureEndsQuestionnaire || q.allowUnsure, {
+  message: 'unsureEndsQuestionnaire ใช้ได้เฉพาะคำถามที่เปิด allowUnsure',
+  path: ['unsureEndsQuestionnaire'],
 });
 
 export const LegalRefSchema = z.object({
@@ -73,7 +86,9 @@ export const PackMetadataSchema = z.object({
 
 export const PackDefinitionSchema = z.object({
   meta: PackMetadataSchema,
-  questions: z.array(QuestionSchema).min(1, 'ต้องมีคำถามอย่างน้อย 1 ข้อ').max(25, 'คำถามต้องไม่เกินขีดจำกัด'),
+  // Cap raised from 15 to 25 on branch fix-rental-law: the rental pack needs all 12 items of
+  // notice clause 6.1 (see docs/adding-a-pack.md). Keep packs as short as the law allows.
+  questions: z.array(QuestionSchema).min(1, 'ต้องมีคำถามอย่างน้อย 1 ข้อ').max(25, 'คำถามต้องไม่เกิน 25 ข้อ'),
   rules: z.array(RuleDefinitionSchema).min(1, 'ต้องมีกฎอย่างน้อย 1 ข้อ'),
 }).refine((data) => {
   // Verify that the scope question exists

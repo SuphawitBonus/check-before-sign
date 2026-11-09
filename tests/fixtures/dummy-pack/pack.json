@@ -51,6 +51,30 @@
       ]
     },
     {
+      "id": "q_dummy_version",
+      "text": "เอกสารนี้ออกภายใต้กฎจำลองฉบับใด?",
+      "type": "choice",
+      "allowUnsure": true,
+      "unsureLabel": "ไม่แน่ใจฉบับ",
+      "unsureEndsQuestionnaire": {
+        "reason": "ไม่ทราบฉบับของกฎจำลอง จึงตรวจไม่ได้ทั้งชุด"
+      },
+      "options": [
+        {
+          "label": "ฉบับปัจจุบัน",
+          "value": "current"
+        },
+        {
+          "label": "ฉบับเก่าที่ระบบยังไม่ได้ตรวจ",
+          "value": "legacy",
+          "endsQuestionnaire": {
+            "reason": "เอกสารนี้อยู่ภายใต้กฎจำลองฉบับเก่าที่ระบบยังไม่ได้ตรวจ จึงตอบว่าบอกไม่ได้ทั้งชุด",
+            "ruleReason": "ฉบับเก่า — บอกไม่ได้"
+          }
+        }
+      ]
+    },
+    {
       "id": "q_dummy_fee",
       "text": "ค่าธรรมเนียมที่เรียกเก็บเป็นจำนวนกี่บาท?",
       "type": "number",

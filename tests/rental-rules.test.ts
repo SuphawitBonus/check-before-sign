@@ -7,6 +7,8 @@ import {
 } from '../packs/rental/rules';
 import rentalPackJson from '../packs/rental/pack.json';
 import { PackDefinition } from '../lib/engine/types';
+import { evaluatePack } from '../lib/engine/evaluator';
+import { rentalPackRules } from '../packs/rental/rules';
 
 /** Contract made after the 2568 notice took effect — the only case the notice can adjudicate. */
 const ON = { q_contract_date: 'on_or_after_effective' };
@@ -590,5 +592,60 @@ describe('Rental pack ↔ statute coverage and source integrity', () => {
     expect(text).not.toContain('โมฆะ');
     expect(text).not.toContain('ข้อ ๕ ที่ห้ามมิให้');
     expect(text).not.toContain('๕ หน่วยขึ้นไป');
+  });
+});
+
+describe('Rental: questionnaire ends right after the contract-date question (engine endsQuestionnaire)', () => {
+  const pack = rentalPackJson as PackDefinition;
+  const dateIndex = pack.questions.findIndex((q) => q.id === 'q_contract_date');
+
+  it('q_contract_date is question 2, right after the scope question', () => {
+    expect(dateIndex).toBe(1);
+    expect(pack.questions[0].isScopeQuestion).toBe(true);
+  });
+
+  for (const value of ['before_effective', 'boundary_day', '__unsure__']) {
+    it(`${value}: with only 2 answers → result page, all ${pack.rules.length} rules undetermined, no evaluator verdict`, () => {
+      const result = evaluatePack(pack, rentalPackRules, { q_scope: 'in_scope', q_contract_date: value });
+      expect(result.isOutOfScope).toBe(false);
+      expect(result.endedEarly?.questionId).toBe('q_contract_date');
+      expect(result.overallSummary.undeterminedCount).toBe(pack.rules.length);
+      expect(result.overallSummary.violatedCount).toBe(0);
+      expect(result.overallSummary.compliantCount).toBe(0);
+      // Banner text = the detailed gate text; per-rule text = the short gate text.
+      expect(result.endedEarly?.reason).toBe(applicabilityGate({ q_contract_date: value }, true)?.reason);
+      for (const r of result.results) {
+        expect(r.reason).toBe(applicabilityGate({ q_contract_date: value })?.reason);
+      }
+    });
+  }
+
+  it('on_or_after_effective does not end the questionnaire', () => {
+    const result = evaluatePack(pack, rentalPackRules, { q_scope: 'in_scope', q_contract_date: 'on_or_after_effective' });
+    expect(result.endedEarly).toBeUndefined();
+  });
+
+  it('a legacy contract with violating later answers still yields 0 violated (later answers ignored)', () => {
+    const result = evaluatePack(pack, rentalPackRules, {
+      q_scope: 'in_scope',
+      q_contract_date: 'before_effective',
+      q_contract_form: 'short_monthly',
+      q_deposit: 5,
+      q_advance_rent: 5,
+      q_renewal_fee: 'has_clause',
+    });
+    expect(result.overallSummary.violatedCount).toBe(0);
+    expect(result.endedEarly?.questionId).toBe('q_contract_date');
+  });
+
+  it('out-of-scope answer on question 1 still wins over the date gate', () => {
+    const result = evaluatePack(pack, rentalPackRules, { q_scope: 'out_hotel', q_contract_date: 'before_effective' });
+    expect(result.isOutOfScope).toBe(true);
+  });
+
+  it('the gate in rules.ts covers values pack.json does not list (garbage → unknown-date text)', () => {
+    const unknown = pack.questions[dateIndex].unsureEndsQuestionnaire!;
+    expect(applicabilityGate({ q_contract_date: 'garbage' }, true)?.reason).toBe(unknown.reason);
+    expect(applicabilityGate({}, false)?.reason).toBe(unknown.ruleReason);
   });
 });

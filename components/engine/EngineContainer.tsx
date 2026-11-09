@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PackDefinition, PackRules, EvaluationOutput } from '../../lib/engine/types';
-import { evaluatePack } from '../../lib/engine/evaluator';
+import { evaluatePack, getQuestionnaireEnd } from '../../lib/engine/evaluator';
 import { decodeAnswersFromShareHash } from '../../lib/engine/sharing';
 import QuestionCard from './QuestionCard';
 import OutOfScopeView from './OutOfScopeView';
@@ -65,7 +65,11 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
       }
     }
 
-    if (currentQuestionIndex < questions.length - 1) {
+    // An answer declared in pack.json as `endsQuestionnaire` jumps straight to the
+    // result page (every rule "undetermined"); later questions are not asked.
+    const endsHere = getQuestionnaireEnd(currentQuestion, answers[currentQuestion.id]) !== null;
+
+    if (!endsHere && currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
       // Completed all questions -> Evaluate!
@@ -103,6 +107,12 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
     setIsOutOfScopeEarly(false);
     setCurrentQuestionIndex(0);
   };
+
+  // When the current answer ends the questionnaire, the button reads
+  // "see result" instead of "next question".
+  const endsAtCurrent = currentQuestion
+    ? getQuestionnaireEnd(currentQuestion, answers[currentQuestion.id]) !== null
+    : false;
 
   // 1. Out of Scope View
   if (isOutOfScopeEarly) {
@@ -175,7 +185,7 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
         onNext={handleNext}
         onPrev={handlePrev}
         isFirst={currentQuestionIndex === 0}
-        isLast={currentQuestionIndex === questions.length - 1}
+        isLast={endsAtCurrent || currentQuestionIndex === questions.length - 1}
       />
     </div>
   );

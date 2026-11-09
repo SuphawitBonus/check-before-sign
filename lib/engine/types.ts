@@ -15,11 +15,25 @@ export interface HelpChannel {
   description?: string;
 }
 
+/**
+ * Declared in pack.json on an option (or on a question for its "unsure" answer).
+ * When that answer is chosen the questionnaire ends immediately and every rule
+ * is reported as "undetermined" with this reason — the engine never runs the
+ * rule evaluators, so it cannot produce "violated" / "compliant" by accident.
+ */
+export interface QuestionnaireEnd {
+  /** Full explanation shown once at the top of the result page. */
+  reason: string;
+  /** Shorter text attached to each rule result. Defaults to `reason`. */
+  ruleReason?: string;
+}
+
 export interface QuestionOption {
   label: string;
   value: string;
   helpText?: string;
   isOutOfScope?: boolean;
+  endsQuestionnaire?: QuestionnaireEnd;
 }
 
 export interface Question {
@@ -35,6 +49,8 @@ export interface Question {
   max?: number;
   step?: number;
   isScopeQuestion?: boolean;
+  /** Same as QuestionOption.endsQuestionnaire, but for the "unsure" answer (`__unsure__`). */
+  unsureEndsQuestionnaire?: QuestionnaireEnd;
 }
 
 export interface LegalRef {
@@ -113,6 +129,13 @@ export interface EvaluationOutput {
   timestamp: string;
   isOutOfScope: boolean;
   scopeReason?: string;
+  /** Present when an answer declared `endsQuestionnaire` stopped the questionnaire. */
+  endedEarly?: {
+    questionId: string;
+    questionText: string;
+    answerLabel: string;
+    reason: string;
+  };
   overallSummary: {
     violatedCount: number;
     compliantCount: number;

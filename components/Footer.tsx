@@ -14,7 +14,7 @@ export default function Footer() {
             <LogoMark className="h-7 w-7" />
             <span className="font-display font-bold text-ink">เช็กก่อนเซ็น</span>
           </div>
-          <p className="text-meta text-ink-3">โครงการภาคพลเมือง ไม่ใช่หน่วยงานราชการ</p>
+          <p className="text-meta text-ink-3">โครงการภาคพลเมือง ไม่ใช่หน่วยงานราชการ และไม่ได้แอบอ้างเป็นหน่วยงานใด</p>
         </div>
         <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm" data-footer-links>
           <li>

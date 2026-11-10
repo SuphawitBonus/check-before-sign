@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Question } from '../../lib/engine/types';
 import { toArabicDigits } from '../../lib/format';
-import { Info, Check, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Check, ArrowLeft, ArrowRight, ChevronDown } from 'lucide-react';
 
 interface QuestionCardProps {
   question: Question;
-  currentIndex: number;
-  totalQuestions: number;
   value: any;
   onChange: (val: any) => void;
   onNext: () => void;
@@ -28,17 +26,12 @@ function RadioDot({ selected }: { selected: boolean }) {
   );
 }
 
-export default function QuestionCard({
-  question,
-  currentIndex,
-  totalQuestions,
-  value,
-  onChange,
-  onNext,
-  onPrev,
-  isFirst,
-  isLast,
-}: QuestionCardProps) {
+const optionClass = (selected: boolean) =>
+  `flex w-full items-start gap-3 rounded-xl border p-4 text-left transition-colors ${
+    selected ? 'border-2 border-primary bg-primary-soft p-[15px]' : 'border-line-strong bg-surface hover:bg-paper'
+  }`;
+
+export default function QuestionCard({ question, value, onChange, onNext, onPrev, isFirst, isLast }: QuestionCardProps) {
   const isUnsure = value === '__unsure__';
   const isAnswered = value !== undefined && value !== null && value !== '';
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -57,68 +50,57 @@ export default function QuestionCard({
   const headingId = `q-${question.id}`;
 
   return (
-    <div className="card p-5 sm:p-8" data-question-card>
-      {/* Step Indicator */}
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <span className="rounded-full bg-sunk px-3 py-1 text-meta font-semibold text-ink-2">
-          ข้อที่ {currentIndex + 1} จาก {totalQuestions}
-        </span>
-        {question.isScopeQuestion && (
-          <span className="whitespace-nowrap rounded-full border border-line-strong px-3 py-0.5 text-meta font-medium text-ink-2">
-            คำถามตรวจขอบเขตกฎหมาย
-          </span>
+    <div className="card space-y-6 p-5 sm:p-8" data-question-card>
+      <div className="space-y-3">
+        <h2
+          id={headingId}
+          ref={headingRef}
+          tabIndex={-1}
+          // Not a control: focus is moved here for screen readers only, so no ring (DESIGN.md §4 exception).
+          // `pretty`, not `balance`: balancing long Thai questions splits compounds like "การ|เช่า".
+          className="font-display text-[21px] font-bold leading-[1.45] text-ink [text-wrap:pretty] focus-visible:outline-none sm:text-[26px]"
+        >
+          {toArabicDigits(question.text)}
+        </h2>
+
+        {/* The legal background of the question stays one click away instead of always on screen. */}
+        {question.helpText && (
+          <details className="group" data-question-help>
+            <summary className="inline-flex cursor-pointer list-none items-center gap-1 rounded-full text-sm font-medium text-primary">
+              ดูตัวบท
+              <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+            </summary>
+            <p className="mt-2 max-w-prose text-sm leading-relaxed text-ink-2">{toArabicDigits(question.helpText)}</p>
+          </details>
         )}
       </div>
 
-      {/* Question Title */}
-      <h2
-        id={headingId}
-        ref={headingRef}
-        tabIndex={-1}
-        // Not a control: focus is moved here for screen readers only, so no ring (DESIGN.md §4 exception).
-        // `pretty`, not `balance`: balancing long Thai questions splits compounds like "การ|เช่า".
-        className="mb-3 font-display text-[21px] font-bold leading-[1.45] text-ink [text-wrap:pretty] focus-visible:outline-none sm:text-[26px]"
-      >
-        {toArabicDigits(question.text)}
-      </h2>
-
-      {question.helpText && (
-        <div className="mb-6 flex items-start gap-2.5 rounded-xl bg-sunk p-3.5 text-sm leading-relaxed text-ink-2">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-          <p>{toArabicDigits(question.helpText)}</p>
-        </div>
-      )}
-
-      {/* Input controls based on type */}
-      <div className="my-6 space-y-3" role="group" aria-labelledby={headingId}>
-        {question.type === 'choice' && question.options && (
-          <div className="grid grid-cols-1 gap-2.5" data-options>
-            {question.options.map((opt) => {
-              const isSelected = value === opt.value;
-              return (
-                <button
-                  key={opt.value}
-                  type="button"
-                  aria-pressed={isSelected}
-                  onClick={() => onChange(opt.value)}
-                  className={`flex items-start gap-3 rounded-xl border p-4 text-left transition-colors ${
-                    isSelected
-                      ? 'border-2 border-primary bg-primary-soft p-[15px]'
-                      : 'border-line-strong bg-surface hover:bg-paper'
-                  }`}
-                >
-                  <RadioDot selected={isSelected} />
-                  <span>
-                    <span className="block font-semibold text-ink">{toArabicDigits(opt.label)}</span>
-                    {opt.helpText && (
-                      <span className="mt-1 block text-sm leading-relaxed text-ink-2">{toArabicDigits(opt.helpText)}</span>
-                    )}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        )}
+      <div className="space-y-2.5" role="group" aria-labelledby={headingId}>
+        {question.type === 'choice' &&
+          question.options?.map((opt) => {
+            const isSelected = value === opt.value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                aria-pressed={isSelected}
+                onClick={() => onChange(opt.value)}
+                className={optionClass(isSelected)}
+                data-option
+              >
+                <RadioDot selected={isSelected} />
+                <span>
+                  <span className="block font-semibold text-ink">{toArabicDigits(opt.label)}</span>
+                  {/* Legal explanation only for the chosen answer. */}
+                  {isSelected && opt.helpText && (
+                    <span className="mt-1 block text-sm leading-relaxed text-ink-2" data-option-help>
+                      {toArabicDigits(opt.helpText)}
+                    </span>
+                  )}
+                </span>
+              </button>
+            );
+          })}
 
         {question.type === 'number' && (
           <div className="space-y-4">
@@ -170,26 +152,16 @@ export default function QuestionCard({
         )}
 
         {question.allowUnsure && (
-          <button
-            type="button"
-            aria-pressed={isUnsure}
-            onClick={() => onChange('__unsure__')}
-            className={`mt-2 flex w-full items-start gap-3 rounded-xl border border-dashed p-4 text-left transition-colors ${
-              isUnsure
-                ? 'border-2 border-solid border-primary bg-primary-soft p-[15px]'
-                : 'border-line-strong text-ink-2 hover:bg-paper'
-            }`}
-          >
+          <button type="button" aria-pressed={isUnsure} onClick={() => onChange('__unsure__')} className={optionClass(isUnsure)} data-option>
             <RadioDot selected={isUnsure} />
-            <span className={`font-medium ${isUnsure ? 'text-ink' : ''}`}>
+            <span className={`font-medium ${isUnsure ? 'text-ink' : 'text-ink-2'}`}>
               {question.unsureLabel || 'ไม่แน่ใจ / ในสัญญาไม่ได้ระบุข้อนี้ไว้'}
             </span>
           </button>
         )}
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex items-center justify-between gap-3 border-t border-line pt-6">
+      <div className="flex items-center justify-between gap-3 pt-2">
         <button
           type="button"
           onClick={onPrev}

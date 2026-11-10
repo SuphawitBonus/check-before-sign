@@ -1,6 +1,7 @@
 // Generates the image assets described in DESIGN.md §5 from the running production build.
 // Usage: npm run build && npm start   (in another terminal), then: node scripts/make-brand-assets.cjs
-// Writes: public/hero-result.png, app/opengraph-image.png, app/apple-icon.png, app/favicon.ico
+// Writes: app/opengraph-image.png, app/apple-icon.png, app/favicon.ico
+// (The home-page hero screenshot was removed in report 5; the home page no longer shows one.)
 // After running it, build again so Next picks up the new files.
 const path = require('path');
 const fs = require('fs');
@@ -11,36 +12,6 @@ const BASE = 'http://localhost:3020';
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 const executablePath = fs.existsSync(CHROME) ? CHROME : EDGE;
-
-// Made-up answers (not a real contract) chosen so the result shows all three verdicts: 4 ขัด / 11 ไม่ขัด / 3 บอกไม่ได้.
-const DEMO_ANSWERS = {
-  q_scope: 'in_scope',
-  q_contract_date: 'on_or_after_effective',
-  q_contract_form: 'short_monthly',
-  q_deposit: 3,
-  q_advance_rent: 1,
-  q_electricity_rate: 'above_actual_rate',
-  q_water_rate: '__unsure__',
-  q_deposit_refund_period: 'within_7_days',
-  q_deposit_refund_after_deduction: 'within_14_days',
-  q_deposit_forfeiture: 'has_clause',
-  q_tenant_termination: 'conforms',
-  q_lessor_termination_notice: 'notice_30_days_or_more',
-  q_lessor_termination_disturbance: 'notice_7_days_or_more',
-  q_lessor_terminate_without_breach: 'no_clause',
-  q_inspection_without_notice: 'notice_required',
-  q_lockout_and_seizure: 'has_clause',
-  q_exemption_of_liability: 'no_clause',
-  q_rent_change_during_term: 'no_clause',
-  q_renewal_fee: '__unsure__',
-  q_normal_wear_liability: '__unsure__',
-  q_force_majeure_liability: 'no_clause',
-};
-const shareHash = Buffer.from(JSON.stringify(DEMO_ANSWERS), 'utf8')
-  .toString('base64')
-  .replace(/\+/g, '-')
-  .replace(/\//g, '_')
-  .replace(/=+$/, '');
 
 // Minimal ICO writer: embeds PNG images (supported by every current browser).
 function pngsToIco(pngs) {
@@ -67,26 +38,10 @@ function pngsToIco(pngs) {
 }
 
 async function run() {
-  fs.mkdirSync(path.join(repo, 'public'), { recursive: true });
   const browser = await puppeteer.launch({ executablePath, headless: true, args: ['--no-sandbox'] });
   const page = await browser.newPage();
 
-  // 1. Hero screenshot: the real result page, top part (title, summary, first violated rules).
-  await page.setViewport({ width: 1200, height: 900, deviceScaleFactor: 1 });
-  await page.goto(`${BASE}/check/rental#share=${shareHash}`, { waitUntil: 'networkidle0' });
-  await page.evaluate(() => document.fonts.ready);
-  const summary = await page.evaluate(() => {
-    document.querySelector('header')?.remove(); // site header is not part of the result
-    document.querySelector('a[href="#main"]')?.remove();
-    window.scrollTo(0, 0);
-    const t = document.body.innerText;
-    return { v: (t.match(/ขัด\s*(\d+)\s*ข้อ/) || [])[1] };
-  });
-  await new Promise((r) => setTimeout(r, 300));
-  await page.screenshot({ path: path.join(repo, 'public/hero-result.png'), clip: { x: 0, y: 0, width: 1200, height: 900 } });
-  console.log('public/hero-result.png', summary);
-
-  // 2. Icons from app/icon.svg.
+  // 1. Icons from app/icon.svg.
   const svg = fs.readFileSync(path.join(repo, 'app/icon.svg'), 'utf8');
   const renderIcon = async (size, pad = 0, bg = 'transparent') => {
     await page.setViewport({ width: size, height: size, deviceScaleFactor: 1 });
@@ -107,7 +62,7 @@ async function run() {
   fs.writeFileSync(path.join(repo, 'app/favicon.ico'), ico);
   console.log('app/apple-icon.png, app/favicon.ico');
 
-  // 3. Open Graph card, rendered on the real site so it uses the self-hosted fonts.
+  // 2. Open Graph card, rendered on the real site so it uses the self-hosted fonts.
   await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
   await page.goto(`${BASE}/`, { waitUntil: 'networkidle0' });
   await page.evaluate((svgMarkup) => {

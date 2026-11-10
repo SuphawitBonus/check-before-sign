@@ -29,6 +29,8 @@ module.exports = {
         mono: ['var(--font-mono)', 'var(--font-body)', 'ui-monospace', 'monospace'],
       },
       fontSize: {
+        // Floor: content text ≥15px (text-sm and up), secondary text 13px (text-meta) — nothing smaller.
+        sm: ['15px', { lineHeight: '1.6' }],
         meta: ['13px', { lineHeight: '1.5' }],
       },
       boxShadow: {

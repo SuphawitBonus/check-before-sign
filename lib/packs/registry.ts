@@ -17,6 +17,8 @@ export interface FuturePackPreview {
   category: string;
   iconName: string;
   plannedSession: string;
+  /** Short label for the one-line "เร็ว ๆ นี้" list on the home page. */
+  soonLabel: string;
 }
 
 // Active available packs
@@ -33,6 +35,7 @@ export const PACK_REGISTRY: Record<string, PackRegistryItem> = {
 export const FUTURE_PACKS: FuturePackPreview[] = [
   {
     id: 'loan-interest',
+    soonLabel: 'เงินกู้',
     title: 'ดอกเบี้ยเงินกู้และสัญญากู้ยืมเงิน',
     shortTitle: 'ดอกเบี้ยเงินกู้',
     description: 'ตรวจอัตราดอกเบี้ยเงินกู้นอกระบบและในระบบ เกณฑ์เพดาน 15% ต่อปีตาม พ.ร.บ. ห้ามเรียกดอกเบี้ยเกินอัตรา และประกาศ ธปท.',
@@ -42,6 +45,7 @@ export const FUTURE_PACKS: FuturePackPreview[] = [
   },
   {
     id: 'labor-rights',
+    soonLabel: 'สัญญาจ้างงาน',
     title: 'สิทธิแรงงานและการจ้างงาน',
     shortTitle: 'สิทธิ์ลูกจ้าง',
     description: 'ตรวจสัญญาจ้างงาน ค่าล่วงเวลา (OT) การบอกเลิกจ้าง และเงินชดเชยตาม พ.ร.บ. คุ้มครองแรงงาน พ.ศ. 2541',
@@ -51,6 +55,7 @@ export const FUTURE_PACKS: FuturePackPreview[] = [
   },
   {
     id: 'flight-rights',
+    soonLabel: 'ตั๋วเครื่องบิน',
     title: 'สิทธิผู้โดยสารสายการบิน (เที่ยวบินล่าช้า/ยกเลิก)',
     shortTitle: 'สิทธิ์เที่ยวบิน',
     description: 'ตรวจสิทธิชดเชย อาหาร ที่พัก และเงินคืนตามประกาศกระทรวงคมนาคม เรื่องการคุ้มครองสิทธิผู้โดยสารสายการบินประจำภายในประเทศ',
@@ -60,6 +65,7 @@ export const FUTURE_PACKS: FuturePackPreview[] = [
   },
   {
     id: 'condo-purchase',
+    soonLabel: 'ซื้อคอนโด',
     title: 'สัญญาจะซื้อจะขายห้องชุดคอนโดมิเนียม',
     shortTitle: 'สัญญาซื้อคอนโด',
     description: 'ตรวจสัญญาจะซื้อจะขายอาคารชุดตามแบบมาตรฐาน สคบ. การคิดเบี้ยปรับ ค่าส่วนกลาง และการส่งมอบห้องล่าช้า',
@@ -68,10 +74,6 @@ export const FUTURE_PACKS: FuturePackPreview[] = [
     plannedSession: 'เฟสถัดไป',
   },
 ];
-
-export function getAllActivePacks(): PackDefinition['meta'][] {
-  return Object.values(PACK_REGISTRY).map(item => item.meta);
-}
 
 export function getPackById(id: string): PackRegistryItem | null {
   return PACK_REGISTRY[id] || null;

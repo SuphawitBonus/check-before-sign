@@ -52,10 +52,11 @@
   .btn-disabled {
     @apply btn cursor-not-allowed bg-sunk text-ink-3;
   }
+  /* The one card style used across the site. Nothing inside a card gets its own background or box. */
   .card {
     @apply rounded-2xl border border-line bg-surface shadow-card;
   }
-  .eyebrow {
-    @apply inline-flex items-center gap-2 text-meta font-semibold;
+  .link {
+    @apply font-semibold text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary;
   }
 }

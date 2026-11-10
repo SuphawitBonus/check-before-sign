@@ -156,44 +156,34 @@ export default function EngineContainer({ pack, rules }: EngineContainerProps) {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 px-4 py-8 sm:px-6 sm:py-10">
-      {/* Back to home / Pack info */}
-      <div className="flex items-center justify-between gap-4">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 rounded-full py-1 text-sm font-medium text-ink-2 hover:text-ink hover:underline"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          <span>เลือกเรื่องอื่น</span>
-        </Link>
-        <div className="max-w-[60%] truncate text-sm font-medium text-ink-3">{pack.meta.shortTitle}</div>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-meta font-medium text-ink-3">
-          <span>ความคืบหน้า</span>
-          <span className="font-mono">{progressPercent}%</span>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between gap-4">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 rounded-full py-1 text-sm font-medium text-ink-2 hover:text-ink hover:underline"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            <span>เลือกเรื่องอื่น</span>
+          </Link>
+          <span className="text-sm font-semibold text-ink-2" data-step-label>
+            ข้อ {currentQuestionIndex + 1} จาก {questions.length}
+          </span>
         </div>
         <div
           className="h-2 w-full overflow-hidden rounded-full bg-sunk"
           role="progressbar"
           aria-label="ความคืบหน้าของแบบสอบถาม"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={progressPercent}
+          aria-valuemin={1}
+          aria-valuemax={questions.length}
+          aria-valuenow={currentQuestionIndex + 1}
+          aria-valuetext={`ข้อ ${currentQuestionIndex + 1} จาก ${questions.length}`}
         >
-          <div
-            className="h-full rounded-full bg-primary transition-all duration-300"
-            style={{ width: `${progressPercent}%` }}
-          />
+          <div className="h-full rounded-full bg-primary transition-all duration-300" style={{ width: `${progressPercent}%` }} />
         </div>
       </div>
 
-      {/* Question Card */}
       <QuestionCard
         question={currentQuestion}
-        currentIndex={currentQuestionIndex}
-        totalQuestions={questions.length}
         value={answers[currentQuestion.id]}
         onChange={handleAnswerChange}
         onNext={handleNext}

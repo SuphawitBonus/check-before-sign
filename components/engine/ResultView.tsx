@@ -1,19 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { EvaluationOutput, RuleStatus } from '../../lib/engine/types';
-import {
-  Copy,
-  Check,
-  Share2,
-  RotateCcw,
-  ExternalLink,
-  ChevronDown,
-  MessageSquare,
-  Scale,
-  Phone,
-  PencilLine,
-} from 'lucide-react';
+import { Copy, Check, Share2, RotateCcw, ExternalLink, ChevronDown, Phone, PencilLine } from 'lucide-react';
 import { encodeAnswersToShareHash } from '../../lib/engine/sharing';
 import { toArabicDigits } from '../../lib/format';
 import { VERDICT, VERDICT_ORDER, VerdictChip } from '../Verdict';
@@ -57,13 +47,7 @@ function ClauseRef({ clause }: { clause: string }) {
   );
 }
 
-export default function ResultView({
-  evaluation,
-  answers,
-  onEditAnswers,
-  onEditQuestion,
-  onReset,
-}: ResultViewProps) {
+export default function ResultView({ evaluation, answers, onEditAnswers, onEditQuestion, onReset }: ResultViewProps) {
   const [filter, setFilter] = useState<'all' | RuleStatus>('all');
   const [copiedRuleId, setCopiedRuleId] = useState<string | null>(null);
   const [expandedVerbatimIds, setExpandedVerbatimIds] = useState<Record<string, boolean>>({});
@@ -99,45 +83,34 @@ export default function ResultView({
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8 pb-4">
-      {/* Title row */}
-      <header className="space-y-5">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="space-y-1">
-            <p className="text-sm font-medium text-ink-3">{evaluation.packTitle}</p>
-            <h1 className="font-display text-[28px] font-bold leading-tight sm:text-[36px]">ผลการตรวจสัญญา</h1>
-            <p className="max-w-prose pt-1 text-sm text-ink-3">
-              เกณฑ์ที่ใช้: {toArabicDigits(evaluation.effectiveDateDisplay)}
-            </p>
-          </div>
-          <div className="flex shrink-0 flex-wrap items-center gap-2">
-            <button type="button" onClick={handleShareLink} className="btn-secondary whitespace-nowrap">
-              {shareCopied ? (
-                <>
-                  <Check className="h-4 w-4 text-compliant-fg" aria-hidden="true" />
-                  <span>คัดลอกลิงก์แล้ว</span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="h-4 w-4" aria-hidden="true" />
-                  <span>แชร์ผลตรวจ</span>
-                </>
-              )}
-            </button>
-            <button type="button" onClick={onEditAnswers} className="btn-primary whitespace-nowrap">
-              <RotateCcw className="h-4 w-4" aria-hidden="true" />
-              <span>แก้ไขคำตอบ</span>
-            </button>
-          </div>
+    <div className="mx-auto max-w-4xl space-y-12 pb-4">
+      <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-ink-3">{evaluation.packTitle}</p>
+          <h1 className="font-display text-[28px] font-bold leading-tight sm:text-[36px]">ผลการตรวจสัญญา</h1>
+          <Link href="/about#sources" className="link text-sm">
+            เกณฑ์ที่ใช้และวันมีผล
+          </Link>
         </div>
-
-        <p className="flex items-start gap-2.5 rounded-xl border border-line bg-sunk/60 px-4 py-3 text-sm leading-relaxed text-ink-2">
-          <Scale className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
-          <span>
-            <strong className="font-semibold text-ink">{evaluation.disclaimer}</strong> ผลนี้มาจากคำตอบที่คุณเลือก
-            ไม่ได้อ่านสัญญาจริง ถ้าต้องการคำปรึกษาทางคดี โทรสายด่วน สคบ. 1166 หรือปรึกษาทนายความ
-          </span>
-        </p>
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <button type="button" onClick={handleShareLink} className="btn-secondary whitespace-nowrap">
+            {shareCopied ? (
+              <>
+                <Check className="h-4 w-4 text-compliant-fg" aria-hidden="true" />
+                <span>คัดลอกลิงก์แล้ว</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="h-4 w-4" aria-hidden="true" />
+                <span>แชร์ผลตรวจ</span>
+              </>
+            )}
+          </button>
+          <button type="button" onClick={onEditAnswers} className="btn-primary whitespace-nowrap">
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
+            <span>แก้ไขคำตอบ</span>
+          </button>
+        </div>
       </header>
 
       {/* Questionnaire ended early by a pack-declared answer */}
@@ -161,11 +134,7 @@ export default function ResultView({
               </dl>
               <p className="max-w-prose leading-relaxed text-ink">{toArabicDigits(evaluation.endedEarly.reason)}</p>
               {onEditQuestion && (
-                <button
-                  type="button"
-                  onClick={() => onEditQuestion(evaluation.endedEarly!.questionId)}
-                  className="btn-secondary"
-                >
+                <button type="button" onClick={() => onEditQuestion(evaluation.endedEarly!.questionId)} className="btn-secondary">
                   <PencilLine className="h-4 w-4" aria-hidden="true" />
                   แก้คำตอบข้อนี้
                 </button>
@@ -175,8 +144,8 @@ export default function ResultView({
         </section>
       )}
 
-      {/* Summary counters — also act as filters */}
-      <section aria-labelledby="summary-title" className="space-y-3">
+      {/* Summary counters (also filters) + the one disclaimer, right next to the result */}
+      <section aria-labelledby="summary-title" className="space-y-4">
         <h2 id="summary-title" className="sr-only">
           สรุปผล
         </h2>
@@ -191,8 +160,8 @@ export default function ResultView({
                 type="button"
                 aria-pressed={active}
                 onClick={() => setFilter(active ? 'all' : status)}
-                className={`flex flex-col items-start gap-1 rounded-2xl border p-3 text-left transition-colors sm:p-5 ${
-                  active ? `${v.soft} border-2 p-[11px] sm:p-[19px]` : 'border-line bg-surface hover:bg-paper'
+                className={`card flex flex-col items-start gap-1 p-3 text-left transition-colors sm:p-5 ${
+                  active ? `${v.soft} border-2 p-[11px] sm:p-[19px]` : 'hover:bg-paper'
                 }`}
               >
                 <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${v.text}`}>
@@ -207,20 +176,15 @@ export default function ResultView({
             );
           })}
         </div>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-3">
-          <span>
-            ตรวจทั้งหมด <span className="font-mono text-ink">{overallSummary.totalEvaluated}</span> ข้อ · กดตัวเลขเพื่อกรอง
-          </span>
-          {filter !== 'all' && (
-            <button
-              type="button"
-              onClick={() => setFilter('all')}
-              className="rounded-full font-semibold text-primary underline decoration-primary/40 hover:decoration-primary"
-            >
-              แสดงทั้งหมด
-            </button>
-          )}
-        </div>
+        <p className="max-w-prose text-sm leading-relaxed text-ink-2" data-result-disclaimer>
+          <strong className="font-semibold text-ink">{evaluation.disclaimer}</strong> · ผลนี้มาจากคำตอบที่คุณเลือก
+          ไม่ได้อ่านสัญญาจริง
+        </p>
+        {filter !== 'all' && (
+          <button type="button" onClick={() => setFilter('all')} className="link rounded-full text-sm">
+            แสดงทั้งหมด {overallSummary.totalEvaluated} ข้อ
+          </button>
+        )}
       </section>
 
       {/* Rule Results List */}
@@ -245,95 +209,79 @@ export default function ResultView({
             const verbatimId = `verbatim-${item.ruleId}`;
 
             return (
-              <li
-                key={item.ruleId}
-                data-status={item.status}
-                className={`overflow-hidden rounded-2xl border border-l-4 border-line bg-surface ${VERDICT[item.status].edge}`}
-              >
-                <div className="space-y-4 p-5 sm:p-6">
-                  <div className="flex flex-col items-start gap-2 sm:flex-row sm:justify-between sm:gap-6">
-                    <VerdictChip status={item.status} size="sm" />
-                    <span className="sm:text-right">
-                      <ClauseRef clause={item.legalRef.clause} />
-                    </span>
+              <li key={item.ruleId} data-status={item.status} className="card space-y-4 p-5 sm:p-6">
+                <div className="flex flex-col items-start gap-2 sm:flex-row sm:justify-between sm:gap-6">
+                  <VerdictChip status={item.status} size="sm" />
+                  <span className="sm:text-right">
+                    <ClauseRef clause={item.legalRef.clause} />
+                  </span>
+                </div>
+
+                <h3 className="text-lg font-semibold leading-snug text-ink">{toArabicDigits(item.title)}</h3>
+
+                <p className="max-w-prose leading-relaxed text-ink">
+                  <span className="font-semibold">ทำไมได้ผลนี้: </span>
+                  {toArabicDigits(item.reason)}
+                </p>
+
+                {item.status === 'violated' && negotiation && (
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="text-sm font-semibold text-ink">ข้อความสุภาพสำหรับคุยกับผู้ให้เช่า</span>
+                      <button
+                        type="button"
+                        onClick={() => handleCopyNegotiation(item.ruleId, negotiation)}
+                        className="btn-secondary min-h-[36px] px-3.5 py-1.5 text-sm"
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="h-4 w-4 text-compliant-fg" aria-hidden="true" />
+                            <span>คัดลอกแล้ว</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-4 w-4" aria-hidden="true" />
+                            <span>คัดลอกข้อความ</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <p className="max-w-prose select-all leading-relaxed text-ink-2">&ldquo;{negotiation}&rdquo;</p>
                   </div>
+                )}
 
-                  <h3 className="text-lg font-semibold leading-snug text-ink">{toArabicDigits(item.title)}</h3>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => toggleVerbatim(item.ruleId)}
+                    aria-expanded={isVerbatimOpen}
+                    aria-controls={verbatimId}
+                    className="inline-flex items-center gap-1 rounded-full py-1 text-sm font-medium text-primary"
+                  >
+                    {isVerbatimOpen ? 'ซ่อนตัวบท' : 'ดูตัวบท'}
+                    <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${isVerbatimOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+                  </button>
 
-                  <div className="rounded-xl bg-sunk p-4 text-[15px] leading-relaxed text-ink">
-                    <span className="font-semibold">ทำไมได้ผลนี้: </span>
-                    {toArabicDigits(item.reason)}
-                  </div>
-
-                  {item.status === 'violated' && negotiation && (
-                    <div className="space-y-3 rounded-xl border border-line p-4">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink">
-                          <MessageSquare className="h-4 w-4 text-primary" aria-hidden="true" />
-                          ข้อความสุภาพสำหรับคุยกับผู้ให้เช่า
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => handleCopyNegotiation(item.ruleId, negotiation)}
-                          className="btn-secondary min-h-[36px] px-3.5 py-1.5 text-sm"
+                  {isVerbatimOpen && (
+                    <div id={verbatimId} className="mt-3 space-y-3">
+                      <blockquote className="max-w-prose border-l border-line-strong pl-4 leading-relaxed text-ink">
+                        {toArabicDigits(item.legalRef.verbatim)}
+                      </blockquote>
+                      <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-meta text-ink-3">
+                        <a
+                          href={item.legalRef.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-sm font-medium text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
                         >
-                          {isCopied ? (
-                            <>
-                              <Check className="h-4 w-4 text-compliant-fg" aria-hidden="true" />
-                              <span>คัดลอกแล้ว</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="h-4 w-4" aria-hidden="true" />
-                              <span>คัดลอกข้อความ</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                      <p className="select-all text-[15px] leading-relaxed text-ink-2">&ldquo;{negotiation}&rdquo;</p>
+                          เปิดเอกสารทางการ
+                          <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                          <span className="sr-only">(เปิดในแท็บใหม่)</span>
+                        </a>
+                        <span>แสดงเลขไทยในตัวบทเป็นเลขอารบิก ถ้อยคำอื่นตรงตามต้นฉบับ</span>
+                      </p>
                     </div>
                   )}
-
-                  <div className="border-t border-line pt-3">
-                    <button
-                      type="button"
-                      onClick={() => toggleVerbatim(item.ruleId)}
-                      aria-expanded={isVerbatimOpen}
-                      aria-controls={verbatimId}
-                      className="flex w-full items-center justify-between gap-3 rounded-lg py-1 text-left text-sm font-medium text-ink-2 hover:text-ink"
-                    >
-                      <span className="inline-flex items-center gap-1.5">
-                        <Scale className="h-4 w-4" aria-hidden="true" />
-                        {isVerbatimOpen ? 'ซ่อนตัวบท' : 'อ่านตัวบทจากราชกิจจานุเบกษา'}
-                      </span>
-                      <ChevronDown
-                        className={`h-4 w-4 shrink-0 transition-transform ${isVerbatimOpen ? 'rotate-180' : ''}`}
-                        aria-hidden="true"
-                      />
-                    </button>
-
-                    {isVerbatimOpen && (
-                      <div id={verbatimId} className="mt-3 space-y-3 rounded-xl border border-line bg-paper p-4">
-                        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                          <ClauseRef clause={item.legalRef.clause} />
-                          <a
-                            href={item.legalRef.sourceUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-primary underline decoration-primary/40 hover:decoration-primary"
-                          >
-                            เปิดเอกสารทางการ
-                            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                            <span className="sr-only">(เปิดในแท็บใหม่)</span>
-                          </a>
-                        </div>
-                        <blockquote className="border-l-2 border-line-strong pl-3 text-[15px] leading-relaxed text-ink">
-                          {toArabicDigits(item.legalRef.verbatim)}
-                        </blockquote>
-                        <p className="text-meta text-ink-3">แสดงเลขไทยในตัวบทเป็นเลขอารบิก ถ้อยคำอื่นตรงตามต้นฉบับ</p>
-                      </div>
-                    )}
-                  </div>
                 </div>
               </li>
             );
@@ -341,22 +289,22 @@ export default function ResultView({
         </ul>
       </section>
 
-      {/* Official Help Channels & Complaints */}
-      <section aria-labelledby="help-title" className="card space-y-4 p-6 sm:p-8">
-        <h2 id="help-title" className="font-display text-xl font-bold">
-          ถ้าเจรจาแล้วไม่ได้ผล
-        </h2>
-        <p className="max-w-prose text-ink-2">
-          ถ้าผู้ให้เช่ายังยืนยันจะใช้ข้อสัญญาที่ขัดกับประกาศ ขอความช่วยเหลือได้จากหน่วยงานเหล่านี้
-        </p>
-        <ul className="grid grid-cols-1 gap-4 pt-1 sm:grid-cols-2">
+      {/* Official Help Channels — plain list, no nested boxes */}
+      <section aria-labelledby="help-title" className="space-y-5">
+        <div className="space-y-1">
+          <h2 id="help-title" className="font-display text-xl font-bold">
+            ถ้าเจรจาแล้วไม่ได้ผล
+          </h2>
+          <p className="max-w-prose text-ink-2">ถ้าผู้ให้เช่ายังยืนยันจะใช้ข้อสัญญาที่ขัดกับประกาศ ขอความช่วยเหลือได้จากหน่วยงานเหล่านี้</p>
+        </div>
+        <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2">
           {evaluation.helpChannels.map((channel, i) => (
-            <li key={i} className="flex flex-col justify-between rounded-xl border border-line bg-paper p-5">
+            <li key={i} className="space-y-3">
               <div>
                 <div className="font-semibold text-ink">{channel.name}</div>
                 {channel.description && <p className="mt-1 text-sm text-ink-2">{channel.description}</p>}
               </div>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {channel.tel && (
                   <a href={`tel:${channel.tel.replace(/[^0-9]/g, '')}`} className="btn-primary min-h-[40px] px-4 py-2 text-sm">
                     <Phone className="h-4 w-4" aria-hidden="true" />
@@ -366,12 +314,7 @@ export default function ResultView({
                   </a>
                 )}
                 {channel.url && (
-                  <a
-                    href={channel.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-secondary min-h-[40px] px-4 py-2 text-sm"
-                  >
+                  <a href={channel.url} target="_blank" rel="noopener noreferrer" className="btn-secondary min-h-[40px] px-4 py-2 text-sm">
                     <span>เว็บไซต์ร้องเรียน</span>
                     <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
                     <span className="sr-only">(เปิดในแท็บใหม่)</span>
@@ -383,8 +326,7 @@ export default function ResultView({
         </ul>
       </section>
 
-      {/* Safe sharing note + reset */}
-      <div className="flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-prose text-sm text-ink-2">
           <span className="font-semibold text-ink">ลิงก์แชร์เก็บอะไรบ้าง:</span> เฉพาะรหัสตัวเลือกที่คุณตอบ ไว้หลังเครื่องหมาย #
           ไม่มีชื่อ เบอร์โทร หรือที่อยู่ และไม่ถูกส่งไปเซิร์ฟเวอร์

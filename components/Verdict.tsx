@@ -7,7 +7,7 @@ import type { RuleStatus } from '../lib/engine/types';
  */
 export const VERDICT: Record<
   RuleStatus,
-  { label: string; meaning: string; Icon: LucideIcon; chip: string; solid: string; text: string; soft: string; edge: string }
+  { label: string; meaning: string; Icon: LucideIcon; chip: string; solid: string; text: string; soft: string }
 > = {
   violated: {
     label: 'ขัด',
@@ -17,7 +17,6 @@ export const VERDICT: Record<
     solid: 'bg-violated-solid text-white border-violated-solid',
     text: 'text-violated-fg',
     soft: 'bg-violated-bg border-violated-line',
-    edge: 'border-l-violated-solid',
   },
   compliant: {
     label: 'ไม่ขัด',
@@ -27,7 +26,6 @@ export const VERDICT: Record<
     solid: 'bg-compliant-solid text-white border-compliant-solid',
     text: 'text-compliant-fg',
     soft: 'bg-compliant-bg border-compliant-line',
-    edge: 'border-l-compliant-solid',
   },
   undetermined: {
     label: 'บอกไม่ได้',
@@ -37,7 +35,6 @@ export const VERDICT: Record<
     solid: 'bg-undetermined-solid text-white border-undetermined-solid',
     text: 'text-undetermined-fg',
     soft: 'bg-undetermined-bg border-undetermined-line',
-    edge: 'border-l-undetermined-solid',
   },
 };
 

@@ -1,18 +1,20 @@
 import type { Metadata, Viewport } from 'next';
-import { Noto_Serif_Thai, IBM_Plex_Sans_Thai_Looped, IBM_Plex_Mono } from 'next/font/google';
+import { Noto_Sans_Thai, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 // next/font downloads these at build time and serves them from this site,
 // so visitors' browsers never contact Google Fonts (DESIGN.md §2).
-const display = Noto_Serif_Thai({
+// One loopless Thai sans for headings and body (owner's choice: cleaner and easier to read).
+// --font-display is kept as a separate variable so headings can change later without touching body text.
+const display = Noto_Sans_Thai({
   subsets: ['thai', 'latin'],
   weight: ['600', '700'],
   variable: '--font-display',
   display: 'swap',
 });
-const body = IBM_Plex_Sans_Thai_Looped({
+const body = Noto_Sans_Thai({
   subsets: ['thai', 'latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-body',
